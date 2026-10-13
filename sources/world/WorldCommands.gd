@@ -3,6 +3,7 @@ class_name WorldCommands
 
 # Command constructor and destructor
 func RegisterCommands():
+	CommandManager.Register("gm", CommandGM, ActorCommons.Permission.NONE, "gm g+1000 | gm exp100x | gm exp1x")
 	CommandManager.Register("spawn", CommandSpawn, ActorCommons.Permission.GM, "spawn <mob_name> <count>" )
 	CommandManager.Register("warp", CommandWarp, ActorCommons.Permission.MODERATOR, "warp <map> <posX> <posY>" )
 	CommandManager.Register("jump", CommandJump, ActorCommons.Permission.MODERATOR, "jump" )
@@ -46,6 +47,7 @@ func RegisterCommands():
 	CommandManager.Register("q", CommandQuery, ActorCommons.Permission.NONE, "q <player>" )
 
 static func UnregisterCommands():
+	CommandManager.Unregister("gm")
 	CommandManager.Unregister("spawn")
 	CommandManager.Unregister("warp")
 	CommandManager.Unregister("jump")
@@ -670,3 +672,32 @@ static func GetAccountID(nickname : String) -> int:
 	if target:
 		return Peers.GetAccount(target.peerID)
 	return Launcher.SQL.GetAccountID(nickname)
+
+# Explicit authority check also applies to debug exports.
+func CommandGM(caller : PlayerAgent, argument : String = "") -> bool:
+	if not caller:
+		return false
+	if not Network.ENetServer or (not Network.ENetServer.isOffline and Peers.GetPermission(caller.peerID) < ActorCommons.Permission.GM):
+		Network.CommandFeedback("GM: ไม่มีสิทธิ์ใช้คำสั่งทดสอบ", caller.peerID)
+		return true
+	if not ActorCommons.IsAlive(caller):
+		Network.CommandFeedback("GM: ฟื้นคืนชีพก่อนใช้คำสั่ง", caller.peerID)
+		return true
+	argument = argument.strip_edges().to_lower()
+	if argument in ["exp100x", "exp1x"]:
+		caller.monsterExpMultiplier = 100 if argument == "exp100x" else 1
+		Network.CommandFeedback("GM: EXP จากมอนสเตอร์ ×%d (จนกว่าจะออกจากเกม)" % caller.monsterExpMultiplier, caller.peerID)
+	elif argument.begins_with("g+"):
+		var digits := argument.substr(2)
+		if digits.is_empty() or digits.length() > 9 or not digits.is_valid_int() or digits.contains("+") or digits.contains("-"):
+			Network.CommandFeedback("GM: ใช้ gm g+1000 โดยใส่จำนวนเต็มบวกไม่เกิน 999999999", caller.peerID)
+			return true
+		var amount := digits.to_int()
+		if amount <= 0 or caller.stat.gp > 2000000000 - amount:
+			Network.CommandFeedback("GM: จำนวนเงินไม่ถูกต้องหรือเกินขีดจำกัด", caller.peerID)
+			return true
+		caller.stat.AddGP(amount)
+		Network.CommandFeedback("GM: เพิ่ม %d G • รวม %d G" % [amount, caller.stat.gp], caller.peerID)
+	else:
+		Network.CommandFeedback("GM: gm g+1000 | gm exp100x | gm exp1x", caller.peerID)
+	return true

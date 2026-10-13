@@ -59,7 +59,7 @@ func SetValue(dealer : Entity, target : Entity, value : int, alteration : ActorC
 		ActorCommons.Alteration.GP:
 			velocity = Vector2(0.0, 12)
 			hue = ActorCommons.GPColor
-			set_text("%d GP" % value)
+			set_text("+%d G" % value)
 		_:
 			assert(false, "Alteration type not handled: " + str(alteration))
 

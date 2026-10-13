@@ -73,6 +73,9 @@ func AddCircle(caption : String, pos : Vector2, diameter : float, skillName : St
 	return button
 
 func OverlayOpen() -> bool:
+	var shop = Launcher.GUI.get_node_or_null("SupplyShopHUD")
+	if shop and shop.panel.visible:
+		return true
 	var travel = Launcher.GUI.get_node_or_null("TravelHUD")
 	if travel and travel.panel and travel.panel.visible:
 		return true
@@ -212,7 +215,9 @@ func _process(delta : float):
 	elif autoMode == AutoMode.SKILLS:
 		status.text = "ออโต: ใช้สกิลเมื่อพร้อม"
 	else:
-		status.text = "กดโจมตีหรือเลือกสกิล"
+		status.text = "แตะมอนสเตอร์เพื่อเลือก • กดโจมตี/สกิล"
+	if is_instance_valid(Entities.target) and ActorCommons.IsAlive(Entities.target):
+		status.text = "เป้าหมาย: %s • Lv.%d" % [tr(Entities.target.nick), Entities.target.stat.level]
 	for idx in skillButtons.size():
 		var skillID : int = DB.GetCellHash(SKILLS[idx])
 		var button : Control = skillButtons[idx]

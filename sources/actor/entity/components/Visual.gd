@@ -231,6 +231,10 @@ func SetEquipment(slot : int, data : EntityData = null, applyOverrides : bool = 
 		sprite.hframes = defaultHframes[slot]
 		sprite.vframes = defaultVframes[slot]
 
+	if slot == ActorCommons.Slot.WEAPON:
+		# Enlarge around the hand-height pivot rather than the feet.
+		sprite.scale = Vector2(1.45, 1.45)
+		sprite.position = Vector2(0, 8.1)
 	SetEquipmentMetadata(slot, cell)
 	LoadSpriteSlot(slot, sprite)
 	if applyOverrides:

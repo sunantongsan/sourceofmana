@@ -1,6 +1,9 @@
 extends BaseAgent
 class_name PlayerAgent
 
+# Testing multiplier is session-only and applied exclusively to monster EXP.
+var monsterExpMultiplier : int = 1
+
 # Player-specific variables
 var peerID : int						= NetworkCommons.PeerUnknownID
 var lastStat : ActorStats				= ActorStats.new()

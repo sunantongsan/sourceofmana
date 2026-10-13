@@ -166,9 +166,11 @@ static func ApplyXp(agent : AIAgent):
 		if entry.attacker != null and not entry.attacker.is_queued_for_deletion():
 			var damageRatio : float = agent.GetDamageRatio(entry.attacker)
 			var bonusScaled : int = int(bonus * damageRatio)
+			if entry.attacker is PlayerAgent:
+				bonusScaled *= entry.attacker.monsterExpMultiplier
 			entry.attacker.stat.AddExperience(bonusScaled, false)
 			if entry.attacker is PlayerAgent:
-				entry.attacker.stat.AddGP(maxi(1, int((2 + agent.stat.level * 2) * damageRatio)), false)
+				entry.attacker.stat.AddGP(maxi(1, int((2 + agent.stat.level * 2) * damageRatio)), true)
 			if damageRatio > 0.5 and entry.attacker.progress:
 				entry.attacker.progress.AddBestiary(agent.data._id, 1)
 				entry.attacker.enemy_killed.emit(entry.attacker, agent.data._id)

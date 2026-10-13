@@ -106,7 +106,9 @@ func OnNewTextSubmitted(newText : String):
 			lineEdit.clear()
 			if Launcher.Player:
 				backlog.Add(newText)
-				if newText[0] == "/":
+				if newText.strip_edges().to_lower().begins_with("gm "):
+					Network.TriggerCommand(newText.strip_edges())
+				elif newText[0] == "/":
 					var command : String = newText.trim_prefix("/")
 					var commandStripped : String = command.strip_edges().to_lower()
 					match commandStripped:

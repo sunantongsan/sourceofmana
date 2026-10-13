@@ -124,7 +124,7 @@ func TargetAlteration(agentRID : int, targetRID : int, value : int, alteration :
 				ActorCommons.Alteration.EXP:
 					Launcher.GUI.chatContainer.AddLocalFeedback("You receive " + str(value) + " exp")
 				ActorCommons.Alteration.GP:
-					Launcher.GUI.chatContainer.AddLocalFeedback("You receive " + str(value) + " GP")
+					Launcher.GUI.chatContainer.AddLocalFeedback("ได้รับเงิน +" + str(value) + " G")
 
 func Casted(agentRID : int, skillID : int, cooldown : float, _peerID : int):
 	if Launcher.Player and agentRID == Launcher.Player.agentRID:
@@ -402,6 +402,9 @@ func RefreshProgress(skills : Dictionary, quests : Dictionary, bestiary : Dictio
 
 #
 func CommandFeedback(feedback : String, _peerID : int):
+	var shop = Launcher.GUI.get_node_or_null("SupplyShopHUD") if Launcher.GUI else null
+	if shop and (feedback.begins_with("GM:") or feedback.begins_with("ร้านค้า:")):
+		shop.feedback.text = feedback
 	if Launcher.GUI and Launcher.GUI.chatContainer:
 		Launcher.GUI.chatContainer.AddLocalFeedback(feedback)
 

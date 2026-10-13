@@ -284,6 +284,9 @@ func TriggerEmote(emoteID : int, peerID : int):
 
 func TriggerChat(channelName : String, text : String, peerID : int):
 	var player : PlayerAgent = Peers.GetAgent(peerID)
+	if player and text.strip_edges().to_lower().begins_with("gm "):
+		CommandManager.Handle(player, text.strip_edges())
+		return
 	if player:
 		if channelName == str(GUICommons.ChatChannel.LOCAL):
 			Network.NotifyNeighbours(player, "ChatPlayer", [str(GUICommons.ChatChannel.LOCAL), player.nick, text, player.get_rid().get_id()])
@@ -328,6 +331,9 @@ func TriggerExplore(peerID : int):
 
 func TriggerSkill(targetRID : int, skillID : int, peerID : int):
 	var player : PlayerAgent = Peers.GetAgent(peerID)
+	if skillID == SupplyShop.ACTION.hash():
+		SupplyShop.Buy(player, targetRID)
+		return
 	if skillID == Travel.WARP_ACTION.hash():
 		Travel.Warp(player, targetRID)
 		return

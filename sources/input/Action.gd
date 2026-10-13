@@ -99,6 +99,28 @@ func MoveTo(pos : Vector2):
 	clickTimer.start()
 
 func _unhandled_input(event):
+	var pointer_press : bool = (event is InputEventScreenTouch and event.pressed) or (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed)
+	if pointer_press and IsEnabled() and FSM.IsGameState() and Launcher.Player:
+		var hud = Launcher.GUI.get_node_or_null("CombatHUD")
+		if hud and hud.ReadyForCombat():
+			var chosen : Entity = null
+			var distance : float = 42.0
+			for candidate in Entities.entities.values():
+				if is_instance_valid(candidate) and candidate.type == ActorCommons.Type.MONSTER and ActorCommons.IsAlive(candidate):
+					var point : Vector2 = candidate.get_global_transform_with_canvas() * Vector2(0, -18)
+					var delta : float = point.distance_to(event.position)
+					if delta < distance:
+						distance = delta
+						chosen = candidate
+			if chosen:
+				hud.StopCombat()
+				hud.requestWait = maxf(hud.requestWait, 0.15)
+				Entities.ClearDelayedHoveredCallback()
+				Network.ClearNavigation()
+				Entities.SetTarget(chosen, false)
+				get_viewport().set_input_as_handled()
+				return
+
 	if event.is_action("gp_click_to") and supportMouse:
 		if IsEnabled() and FSM.IsGameState() and clickTimer and Launcher.Player and IsActionPressed("gp_click_to"):
 			if Entities.hovered:

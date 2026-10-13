@@ -235,6 +235,9 @@ func AddExperience(value : int, hasFeedback : bool = true):
 func AddGP(value : int, hasFeedback : bool = true):
 	if not ActorCommons.IsAlive(actor) or value <= 0:
 		return
+	value = mini(value, maxi(0, 2000000000 - gp))
+	if value <= 0:
+		return
 	gp += value
 	vital_stats_updated.emit()
 	if actor is PlayerAgent:

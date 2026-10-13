@@ -62,11 +62,7 @@ func Update(nextVelocity : Vector2, gardbandPosition : Vector2, nextOrientation 
 
 		match nextState:
 			ActorCommons.State.DEATH:
-				visual.EndSpellPose()
-				interactive.StopCasting()
-				if type == ActorCommons.Type.MONSTER:
-					interactive.hide()
-					create_tween().tween_property(visual, "modulate:a", 0.0, 0.35).set_delay(0.2)
+				ApplyDeathVisual.call_deferred()
 				entity_died.emit()
 			ActorCommons.State.IDLE:
 				if Launcher.Player == self:
@@ -167,3 +163,19 @@ func _ready():
 
 	if sfx and not visual.state_changed.is_connected(sfx.HandleState):
 		visual.state_changed.connect(sfx.HandleState)
+
+func ApplyDeathVisual():
+	# FullUpdate can carry death before a deferred spawn has entered the tree.
+	if not is_node_ready():
+		await ready
+	if state != ActorCommons.State.DEATH or is_queued_for_deletion():
+		return
+	if visual:
+		visual.EndSpellPose()
+	if interactive:
+		interactive.StopCasting()
+	if type == ActorCommons.Type.MONSTER:
+		if interactive:
+			interactive.hide()
+		if visual:
+			create_tween().tween_property(visual, "modulate:a", 0.0, 0.35).set_delay(0.2)
