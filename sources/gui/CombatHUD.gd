@@ -2,7 +2,7 @@ extends Control
 
 const RoundButton = preload("res://sources/gui/CombatButton.gd")
 const SKILLS : Array[String] = ["Mana Burst", "Leaf Blades", "Sonic Scream"]
-const SKILL_LABELS : Array[String] = ["ระเบิดปราณ", "คมปราณ", "คลื่นเสียง"]
+const SKILL_LABELS : Array[String] = ["ปราณม่วง", "กระบี่หยก", "กระบี่คราม"]
 enum AutoMode { OFF, NORMAL, SKILLS }
 var autoMode : AutoMode = AutoMode.OFF
 var attackButton : Control

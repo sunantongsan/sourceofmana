@@ -190,4 +190,34 @@ func run():
 	agent.stat.AddExperience(500000, false)
 	assert(agent.stat.level == 100 and agent.stat.experience == 0)
 	print("CULTIVATION_COMBAT_CITY_PASS")
+	# Presentation must animate the whole equipped body, cancel cleanly,
+	# exercise every drawing path, and release its capped allocations.
+	hud.StopCombat()
+	await get_tree().create_timer(2.0).timeout
+	var visual = Launcher.Player.visual
+	for direction in [Vector2.RIGHT, Vector2.LEFT, Vector2.UP, Vector2.DOWN]:
+		Launcher.Player.entityOrientation = direction
+		visual.BeginStrike()
+		await get_tree().create_timer(0.08).timeout
+		print("STRIKE_CHECK ", direction, " position=", visual.preset.position, " delay=", Launcher.Player.stat.current.castAttackDelay, " type=", Launcher.Player.type, " morph=", Launcher.Player.stat.IsMorph())
+		assert(visual.preset.position.length() > 0.1, "Wind-up must move the layered sprite")
+		visual.StopStrike()
+		assert(visual.preset.position == Vector2.ZERO)
+	Launcher.Player.interactive.DisplayCast("Mana Burst".hash())
+	assert(is_instance_valid(Launcher.Player.interactive.cultivationCharge))
+	Launcher.Player.interactive.DisplayCast(DB.UnknownHash)
+	assert(Launcher.Player.interactive.cultivationCharge == null)
+	var holder := Node2D.new()
+	add_child(holder)
+	for effect in ["slash", "hit", "burst", "blades", "wave", "charge"]:
+		var fx := CultivationFX.Spawn(holder, Vector2.ZERO, effect, Vector2.RIGHT)
+		assert(fx != null)
+	await get_tree().create_timer(1.2).timeout
+	assert(holder.get_child_count() == 0, "Finished effects must release themselves")
+	for i in range(CultivationFX.LIMIT + 5):
+		CultivationFX.Spawn(holder, Vector2.ZERO, "hit", Vector2.RIGHT)
+	assert(CultivationFX.active <= CultivationFX.LIMIT)
+	await get_tree().create_timer(0.5).timeout
+	assert(holder.get_child_count() == 0)
+	print("CULTIVATION_FX_LIFECYCLE_PASS")
 	Launcher.Quit()

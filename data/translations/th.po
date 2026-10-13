@@ -635,13 +635,13 @@ msgid "Jump"
 msgstr "กระโดด"
 
 msgid "Sonic Scream"
-msgstr "เสียงกรีดร้อง"
+msgstr "คลื่นกระบี่คราม"
 
 msgid "Leaf Blades"
-msgstr "คมมีดใบไม้"
+msgstr "ค่ายกลกระบี่หยก"
 
 msgid "Mana Burst"
-msgstr "ระเบิดปราณ"
+msgstr "ระเบิดปราณม่วง"
 
 msgid "Morph"
 msgstr "แปลงกาย"

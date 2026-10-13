@@ -16,6 +16,7 @@ var displayName : bool						= false
 var selectionFx : GPUParticles2D			= null
 var visualOffset : int						= -1
 var hpFadeTween : Tween						= null
+var cultivationCharge : CultivationFX = null
 var currentCastFx : GPUParticles2D			= null
 var buffFxs : Dictionary[CellCommons.Modifier, Node2D]	= {}
 
@@ -131,6 +132,9 @@ func DisplaySkillRange(skill : SkillCell):
 	skillPreview.queue_redraw()
 
 func StopCasting():
+	if is_instance_valid(cultivationCharge):
+		cultivationCharge.queue_free()
+	cultivationCharge = null
 	if currentCastFx:
 		currentCastFx.emitting = false
 		Callback.SelfDestructTimer(currentCastFx, currentCastFx.lifetime, Util.RemoveNode, [currentCastFx, self])
@@ -157,18 +161,38 @@ func DisplayBuff(effect : CellCommons.Modifier, skillID : int, enabled : bool):
 			Util.RemoveNode(buffFx, self)
 
 func DisplayCast(skillID : int):
+	StopCasting()
+	if skillID == "Melee".hash():
+		entity.visual.BeginStrike()
+	elif skillID == DB.UnknownHash:
+		entity.visual.StopStrike()
 	if DB.SkillsDB.has(skillID):
 		var skill : SkillCell = DB.SkillsDB[skillID]
+		if skillID in ["Mana Burst".hash(), "Leaf Blades".hash()]:
+			cultivationCharge = CultivationFX.Spawn(self, global_position, "charge", entity.entityOrientation, skill.skillRange + entity.stat.current.attackRange)
+			if cultivationCharge:
+				cultivationCharge.duration = maxf(0.1, skill.castTime + entity.stat.current.castAttackDelay)
+				cultivationCharge.tint = Color(0.65, 0.45, 1.0) if skillID == "Mana Burst".hash() else Color(0.3, 1.0, 0.65)
 		if skill.castPreset:
-			StopCasting()
 			currentCastFx = skill.castPreset.instantiate()
 			if currentCastFx:
 				currentCastFx.emitting = true
 				add_child(currentCastFx)
-	else:
-		StopCasting()
 
 func DisplaySkill(emitter : Entity, skillID : int, cooldown : float):
+	var effect := ""
+	if skillID == "Melee".hash() and emitter.type == ActorCommons.Type.PLAYER:
+		effect = "slash"
+	elif skillID == "Mana Burst".hash():
+		effect = "burst"
+	elif skillID == "Leaf Blades".hash():
+		effect = "blades"
+	elif skillID == "Sonic Scream".hash():
+		effect = "wave"
+	if not effect.is_empty() and Launcher.Map.currentFringe:
+		var cell: SkillCell = DB.SkillsDB.get(skillID)
+		var reach := float(cell.skillRange + emitter.stat.current.attackRange) if cell else 40.0
+		CultivationFX.Spawn(Launcher.Map.currentFringe, emitter.global_position, effect, emitter.entityOrientation, reach)
 	if DB.SkillsDB.has(skillID):
 		var skill : SkillCell = DB.SkillsDB[skillID]
 		if skill:
@@ -201,6 +225,8 @@ func DisplayProjectile(targetPos : Vector2, skill : SkillCell):
 			Launcher.Map.currentFringe.add_child(projectileNode)
 
 func DisplayAlteration(target : Entity, emitter : Entity, value : int, alteration : ActorCommons.Alteration, skillID : int):
+	if value > 0 and alteration in [ActorCommons.Alteration.HIT, ActorCommons.Alteration.CRIT] and Launcher.Map.currentFringe:
+		CultivationFX.Spawn(Launcher.Map.currentFringe, target.global_position + Vector2(0, -18), "hit", Vector2.UP)
 	if Launcher.Map.currentFringe:
 		var newLabel : Label = ActorCommons.AlterationLabel.instantiate()
 		newLabel.SetPosition(visibleNode.get_global_position(), target.get_global_position())

@@ -27,6 +27,8 @@ var attackTimeScalePath : String			= ""
 var equipmentEffects : Array[Node2D]		= []
 var skillCastID : int						= DB.UnknownHash
 var attackAnimLength : float				= 1.0
+var strikeTween : Tween = null
+
 var originalAnimationLib : AnimationLibrary	= null
 var defaultHframes : Dictionary				= {}
 var defaultVframes : Dictionary				= {}
@@ -44,6 +46,7 @@ func LoadSpriteSlot(slot : ActorCommons.Slot, sprite : Sprite2D):
 				spriteOffsetUpdate.emit()
 
 func ResetData():
+	StopStrike()
 	if preset:
 		preset.queue_free()
 	for effect in equipmentEffects:
@@ -435,3 +438,22 @@ func _notification(what : int):
 func _init():
 	sprites.resize(ActorCommons.SlotEquipmentCount + ActorCommons.SlotModifierCount)
 	equipmentEffects.resize(ActorCommons.State.COUNT)
+
+# Translate the complete layered sprite together so equipment stays on the body.
+func BeginStrike():
+	if entity.type != ActorCommons.Type.PLAYER or entity.stat.IsMorph() or Travel.IsFlying(entity) or not is_instance_valid(preset):
+		return
+	StopStrike()
+	var direction := entity.entityOrientation.normalized()
+	var delay := clampf(entity.stat.current.castAttackDelay, 0.18, 1.0)
+	strikeTween = create_tween()
+	strikeTween.tween_property(preset, "position", -direction * 3.0, delay * 0.35).set_trans(Tween.TRANS_SINE)
+	strikeTween.tween_property(preset, "position", direction * 6.0, delay * 0.18).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	strikeTween.tween_property(preset, "position", Vector2.ZERO, delay * 0.47).set_trans(Tween.TRANS_SINE)
+
+func StopStrike():
+	if strikeTween:
+		strikeTween.kill()
+		strikeTween = null
+	if is_instance_valid(preset):
+		preset.position = Vector2.ZERO
