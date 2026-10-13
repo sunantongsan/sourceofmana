@@ -31,6 +31,9 @@ func _process(delta : float):
 		queue_redraw()
 
 func _draw():
+	# Replacement atlas includes the flying sword. Avoid drawing a second one.
+	if is_instance_valid(entity.visual.heroArt) and entity.visual.heroArt.visible:
+		return
 	# A small original sword silhouette matching the existing pixel-art scale.
 	draw_line(Vector2(-44, 0), Vector2(-19, 0), Color(0.3, 0.85, 1, 0.3), 9)
 	draw_line(Vector2(-54, 0), Vector2(-19, 0), Color(0.65, 0.95, 1, 0.65), 2)
