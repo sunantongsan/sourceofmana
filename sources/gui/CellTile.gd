@@ -104,14 +104,14 @@ func GetTooltipWeight() -> String:
 	return "\n\nWeight: [color=%s]%dg[/color]" % [lightColor, cell.weight]
 
 func GetTooltipHeader() -> String:
-	var bbcode : String = cell.name
+	var bbcode : String = tr(cell.name)
 	var lightColor : String = "#" + UICommons.LightTextColor.to_html(false)
 	if cell is ItemCell and not cell.customfield.is_empty():
-		bbcode += " (%s)" % cell.customfield
+		bbcode += " (%s)" % tr(cell.customfield)
 	if cell.description:
-		bbcode += "\n[color=%s]%s[/color]" % [lightColor, cell.description]
+		bbcode += "\n[color=%s]%s[/color]" % [lightColor, tr(cell.description)]
 	if cell is SkillCell and Launcher.Player and Launcher.Player.progress:
-		bbcode += "\nLevel: [color=%s]%d[/color]" % [lightColor, Launcher.Player.progress.GetSkillLevel(cell)]
+		bbcode += "\nระดับ: [color=%s]%d[/color]" % [lightColor, Launcher.Player.progress.GetSkillLevel(cell)]
 	return bbcode
 
 func SetToolTip():

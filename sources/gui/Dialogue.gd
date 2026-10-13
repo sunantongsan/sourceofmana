@@ -28,7 +28,7 @@ func AddName(text : String):
 		var newName : bool = not lastName.is_empty()
 		lastName = text
 		var label : RichTextLabel = PlayerNameLabel.instantiate() if lastName == Launcher.Player.nick else NPCNameLabel.instantiate()
-		label.set_text("%s[color=#%s]%s[/color]" % ["\n" if newName else "", UICommons.LightTextColor.to_html(false), lastName])
+		label.set_text("%s[color=#%s]%s[/color]" % ["\n" if newName else "", UICommons.LightTextColor.to_html(false), lastName if lastName == Launcher.Player.nick else tr(lastName)])
 		scrollable.textContainer.add_child.call_deferred(label)
 
 func AddDialogue(text : String):

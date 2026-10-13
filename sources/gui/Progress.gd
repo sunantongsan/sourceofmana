@@ -53,7 +53,7 @@ func RefreshBestiary(mobID : int, count : int):
 		bestiaries[mobID] = menuLine
 		bestiaryContainer.add_child.call_deferred(menuLine)
 
-	menuLine.set_text("%s (%d kill%s)" % [entityData._name, count, "s" if count > 1 else ""])
+	menuLine.set_text("%s (กำจัด %d ตัว)" % [tr(entityData._name), count])
 
 	if not bestiaryLabel.is_visible():
 		bestiaryLabel.set_visible(true)
@@ -79,7 +79,7 @@ func RefreshQuest(questID : int, state : int):
 		if not completedQuests.get(questID, false):
 			completedQuestContainer.add_child.call_deferred(menuLine)
 			completedQuests[questID] = true
-			menuLine.set_text("%s (Completed)" % questData.name)
+			menuLine.set_text("%s (สำเร็จ)" % tr(questData.name))
 	else:
 		if completedQuests.get(questID, false):
 			completedQuestContainer.remove_child.call_deferred(menuLine)
@@ -87,7 +87,7 @@ func RefreshQuest(questID : int, state : int):
 		if not activeQuests.get(questID, false):
 			activeQuestContainer.add_child.call_deferred(menuLine)
 			activeQuests[questID] = true
-			menuLine.set_text("%s" % questData.name)
+			menuLine.set_text(tr(questData.name))
 
 	questSeparator.set_visible(not activeQuests.is_empty() and not completedQuests.is_empty())
 	menuLine.Enable(not isComplete)
@@ -107,16 +107,16 @@ func RefreshQuestDescription(questID : int):
 		return
 
 	if not questData.description.is_empty():
-		questDescription.text += "Description:\n[color=#%s]%s[/color]\n\n" % [UICommons.TextColor.to_html(false), questData.description]
+		questDescription.text += "เป้าหมาย:\n[color=#%s]%s[/color]\n\n" % [UICommons.TextColor.to_html(false), tr(questData.description)]
 	if not questData.giver.is_empty():
-		questDescription.text += "Giver:\n[color=#%s]%s" % [UICommons.WarnTextColor.to_html(false), questData.giver]
+		questDescription.text += "ผู้ฝึกสอน:\n[color=#%s]%s" % [UICommons.WarnTextColor.to_html(false), tr(questData.giver)]
 		if not questData.giverLocation.is_empty():
-			questDescription.text += " (%s)" % questData.giverLocation
+			questDescription.text += " (%s)" % tr(questData.giverLocation)
 		questDescription.text += "[/color]\n\n"
 	if not questData.target.is_empty():
-		questDescription.text += "Target:\n[color=#%s]%s" % [UICommons.WarnTextColor.to_html(false), questData.target]
+		questDescription.text += "เป้าหมาย:\n[color=#%s]%s" % [UICommons.WarnTextColor.to_html(false), questData.target]
 		if not questData.targetLocation.is_empty():
 			questDescription.text += " (%s)" % questData.targetLocation
 		questDescription.text += "[/color]\n\n"
 	if not questData.reward.is_empty():
-		questDescription.text += "Reward:\n[color=#%s]%s[/color]\n\n" % [UICommons.WarnTextColor.to_html(false), questData.reward]
+		questDescription.text += "รางวัล:\n[color=#%s]%s[/color]\n\n" % [UICommons.WarnTextColor.to_html(false), tr(questData.reward)]

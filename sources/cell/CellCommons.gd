@@ -62,28 +62,28 @@ enum Modifier {
 
 static func GetModifierDisplayName(effect : Modifier) -> String:
 	match effect:
-		Modifier.Health:		return "Health"
-		Modifier.Mana:			return "Mana"
-		Modifier.Stamina:		return "Stamina"
-		Modifier.MaxHealth:		return "Max Health"
-		Modifier.MaxMana:		return "Max Mana"
-		Modifier.MaxStamina:	return "Max Stamina"
-		Modifier.Attack:		return "Attack"
-		Modifier.Defense:		return "Defense"
-		Modifier.MAttack:		return "M. Attack"
-		Modifier.MDefense:		return "M. Defense"
-		Modifier.AttackRange:	return "Atk Range"
-		Modifier.CritRate:		return "Crit Rate"
-		Modifier.DodgeRate:		return "Dodge Rate"
-		Modifier.Accuracy:		return "Accuracy"
-		Modifier.CastDelay:		return "Cast Delay"
-		Modifier.CooldownDelay:	return "Cooldown"
-		Modifier.RegenHealth:	return "HP Regen"
-		Modifier.RegenMana:		return "MP Regen"
-		Modifier.RegenStamina:	return "SP Regen"
-		Modifier.WalkSpeed:		return "Walk Speed"
-		Modifier.WeightCapacity: return "Carry Weight"
-		_:						return "Unknown"
+		Modifier.Health:		return TranslationServer.translate("Health")
+		Modifier.Mana:			return TranslationServer.translate("Mana")
+		Modifier.Stamina:		return TranslationServer.translate("Stamina")
+		Modifier.MaxHealth:		return TranslationServer.translate("Max Health")
+		Modifier.MaxMana:		return TranslationServer.translate("Max Mana")
+		Modifier.MaxStamina:	return TranslationServer.translate("Max Stamina")
+		Modifier.Attack:		return TranslationServer.translate("Attack")
+		Modifier.Defense:		return TranslationServer.translate("Defense")
+		Modifier.MAttack:		return TranslationServer.translate("M. Attack")
+		Modifier.MDefense:		return TranslationServer.translate("M. Defense")
+		Modifier.AttackRange:	return TranslationServer.translate("Atk Range")
+		Modifier.CritRate:		return TranslationServer.translate("Crit Rate")
+		Modifier.DodgeRate:		return TranslationServer.translate("Dodge Rate")
+		Modifier.Accuracy:		return TranslationServer.translate("Accuracy")
+		Modifier.CastDelay:		return TranslationServer.translate("Cast Delay")
+		Modifier.CooldownDelay:	return TranslationServer.translate("Cooldown")
+		Modifier.RegenHealth:	return TranslationServer.translate("HP Regen")
+		Modifier.RegenMana:		return TranslationServer.translate("MP Regen")
+		Modifier.RegenStamina:	return TranslationServer.translate("SP Regen")
+		Modifier.WalkSpeed:		return TranslationServer.translate("Walk Speed")
+		Modifier.WeightCapacity: return TranslationServer.translate("Carry Weight")
+		_:						return TranslationServer.translate("Unknown")
 
 static func IsInverseModifier(effect : Modifier) -> bool:
 	return effect == Modifier.CastDelay or effect == Modifier.CooldownDelay

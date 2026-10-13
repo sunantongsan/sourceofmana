@@ -66,43 +66,43 @@ func FillWarningLabel(err : NetworkCommons.AuthError):
 			ClearSavedToken()
 			RequestFocus(passwordTextControl)
 		NetworkCommons.AuthError.ERR_DUPLICATE_CONNECTION:
-			warn = "Another connection happened with the same login."
+			warn = "บัญชีนี้ถูกใช้งานจากที่อื่น"
 		NetworkCommons.AuthError.ERR_AUTH:
 			warn = "Invalid account name or password."
 			RequestFocus(passwordTextControl)
 		NetworkCommons.AuthError.ERR_PASSWORD_VALID:
-			warn = "Password should not include control characters such as tabs or line breaks."
+			warn = "รหัสผ่านห้ามมีแท็บหรือขึ้นบรรทัดใหม่"
 			RequestFocus(passwordTextControl)
 		NetworkCommons.AuthError.ERR_PASSWORD_SIZE:
-			warn = "Password length should be inbetween %d and %d character long." % [NetworkCommons.PasswordMinSize, NetworkCommons.PasswordMaxSize]
+			warn = "รหัสผ่านต้องยาว %d ถึง %d ตัวอักษร" % [NetworkCommons.PasswordMinSize, NetworkCommons.PasswordMaxSize]
 			RequestFocus(passwordTextControl)
 		NetworkCommons.AuthError.ERR_NAME_AVAILABLE:
 			warn = "Account name not available."
 			RequestFocus(nameTextControl)
 		NetworkCommons.AuthError.ERR_NAME_VALID:
-			warn = "Name should should only include alpha-numeric characters and symbols."
+			warn = "กรุณาใช้ตัวอักษร ตัวเลข หรือสัญลักษณ์ที่ระบบรองรับ"
 			RequestFocus(nameTextControl)
 		NetworkCommons.AuthError.ERR_NAME_SIZE:
-			warn = "Name length should be inbetween %d and %d character long." % [NetworkCommons.PlayerNameMinSize, NetworkCommons.PlayerNameMaxSize]
+			warn = "ชื่อต้องยาว %d ถึง %d ตัวอักษร" % [NetworkCommons.PlayerNameMinSize, NetworkCommons.PlayerNameMaxSize]
 			RequestFocus(nameTextControl)
 		NetworkCommons.AuthError.ERR_PASSWORD_MISMATCH:
 			warn = "Passwords do not match."
 			RequestFocus(confirmPasswordTextControl)
 		NetworkCommons.AuthError.ERR_EMAIL_VALID:
-			warn = "Email is incorrect, please us a normal email format."
+			warn = "รูปแบบอีเมลไม่ถูกต้อง"
 			RequestFocus(emailTextControl)
 		NetworkCommons.AuthError.ERR_RESET_UNAVAILABLE:
-			warn = "Password reset is not available on this server."
+			warn = "เซิร์ฟเวอร์นี้ยังไม่รองรับการกู้รหัสผ่าน"
 			SetRecoveryState(RecoveryState.NONE)
 		NetworkCommons.AuthError.ERR_RESET_EMAIL_SENT:
-			warn = "If this email is registered, a reset code has been sent. Check your inbox."
+			warn = "หากอีเมลนี้มีบัญชี ระบบจะส่งรหัสกู้คืนให้ โปรดตรวจกล่องจดหมาย"
 			isWarn = false
 			SetRecoveryState(RecoveryState.ENTER_CODE)
 		NetworkCommons.AuthError.ERR_RESET_INVALID_CODE:
 			warn = "Invalid or expired reset code."
 			RequestFocus(resetCodeTextControl)
 		NetworkCommons.AuthError.ERR_RESET_PASSWORD_UPDATED:
-			warn = "Password updated successfully. You can now log in."
+			warn = "เปลี่ยนรหัสผ่านแล้ว เข้าสู่เกมได้เลย"
 			isWarn = false
 			SetRecoveryState(RecoveryState.NONE)
 		_:

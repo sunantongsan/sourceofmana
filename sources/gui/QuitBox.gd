@@ -1,7 +1,7 @@
 extends MessageBox
 class_name QuitBox
 
-const QuitText : String = "Any time spent in the real world is less time spent in the mana world!"
+const QuitText : String = "ต้องการออกจากเกมหรือไม่?"
 
 #
 func Toggle():

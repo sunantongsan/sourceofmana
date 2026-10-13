@@ -24,7 +24,7 @@ func _init(_id : int, labelName : String):
 	button_mask = 0
 	toggle_mode = true
 	id = _id
-	set_text(labelName)
+	set_text(tr(labelName))
 	set_name(labelName)
 
 func _gui_input(event):

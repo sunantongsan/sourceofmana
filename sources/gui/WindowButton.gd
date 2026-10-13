@@ -11,4 +11,4 @@ func OnTopButtonPressed():
 
 func _ready():
 	assert(targetWindow != null, "Invalid shortcut given for this window button")
-	tooltip_text = tooltip_text + " " + name
+	tooltip_text = tr(tooltip_text) + " " + tr(name)

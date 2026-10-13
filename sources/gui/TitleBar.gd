@@ -7,7 +7,7 @@ extends Control
 
 #
 func _ready():
-	titleLabel.text = titleText
+	titleLabel.text = tr(titleText)
 
 func _on_hide_button_pressed():
 	var ancestor : WindowPanel = UICommons.GetWindowPanelAncestor(self)

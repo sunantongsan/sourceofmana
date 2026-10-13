@@ -31,7 +31,7 @@ func _show(button : Button, state : bool):
 	trailingSpacer.set_visible(state)
 
 func _name(button : Button, buttonName : String):
-	button.set_text(buttonName)
+	button.set_text(tr(buttonName))
 
 func _clear(button : Button):
 	if suggestedButton == button:

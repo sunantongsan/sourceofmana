@@ -85,6 +85,10 @@ func CloseCurrent():
 			ToggleControl(control)
 
 func GoBack():
+	var guide = get_node_or_null("TrainingGuide")
+	if guide and guide.panel.visible:
+		guide.CloseGuide()
+		return
 	if Launcher.Action and Launcher.Action.IsEnabled():
 		CloseWindow()
 	else:
@@ -346,6 +350,8 @@ func GetUITarget(target : UICommons.UITarget) -> Control:
 
 #
 func _ready():
+	TranslationServer.set_locale("th")
+	add_child(preload("res://sources/gui/TrainingGuide.gd").new())
 	get_tree().set_auto_accept_quit(false)
 	get_tree().set_quit_on_go_back(false)
 	DisplayServer.pip_mode_set_auto_enter_on_background(true)

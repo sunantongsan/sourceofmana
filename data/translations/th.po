@@ -1,0 +1,735 @@
+msgid ""
+msgstr ""
+"Language: th\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Accuracy"
+msgstr "ความแม่นยำ"
+
+msgid "Action Overlay"
+msgstr "ปุ่มสัมผัส"
+
+msgid "Agility"
+msgstr "ความคล่องตัว"
+
+msgid "Alerts"
+msgstr "เสียงแจ้งเตือน"
+
+msgid "Attack"
+msgstr "พลังโจมตี"
+
+msgid "Attack Range"
+msgstr "ระยะโจมตี"
+
+msgid "Attributes"
+msgstr "ค่าสถานะ"
+
+msgid "Available points"
+msgstr "แต้มที่เหลือ"
+
+msgid "Bestiary"
+msgstr "บันทึกมอนสเตอร์"
+
+msgid "Bug Reports"
+msgstr "รายงานข้อผิดพลาด"
+
+msgid "Cancel"
+msgstr "ยกเลิก"
+
+msgid "Capacity"
+msgstr "ความจุ"
+
+msgid "Cast Delay"
+msgstr "เวลาร่าย"
+
+msgid "Cathode Ray Tube"
+msgstr "ภาพจอโทรทัศน์เก่า"
+
+msgid "Change Password"
+msgstr "เปลี่ยนรหัสผ่าน"
+
+msgid "Combat"
+msgstr "เสียงต่อสู้"
+
+msgid "Concentration"
+msgstr "สมาธิ"
+
+msgid "Confirm"
+msgstr "ยืนยัน"
+
+msgid "Confirm Password"
+msgstr "ยืนยันรหัสผ่าน"
+
+msgid "Current Password"
+msgstr "รหัสผ่านปัจจุบัน"
+
+msgid "New Password"
+msgstr "รหัสผ่านใหม่"
+
+msgid "Cooldown Delay"
+msgstr "เวลาพักสกิล"
+
+msgid "Crit Rate"
+msgstr "โอกาสคริติคอล"
+
+msgid "Defense"
+msgstr "พลังป้องกัน"
+
+msgid "Dodge Rate"
+msgstr "โอกาสหลบหลีก"
+
+msgid "Drop"
+msgstr "ทิ้ง"
+
+msgid "Effect"
+msgstr "ผลลัพธ์"
+
+msgid "Email"
+msgstr "อีเมล"
+
+msgid "Endurance"
+msgstr "ความทนทาน"
+
+msgid "Enter Character Name"
+msgstr "ตั้งชื่อตัวละคร"
+
+msgid "Equip"
+msgstr "สวมใส่"
+
+msgid "Equipment"
+msgstr "อุปกรณ์"
+
+msgid "Ethnicity"
+msgstr "รูปลักษณ์"
+
+msgid "Experience"
+msgstr "ค่าประสบการณ์"
+
+msgid "Fullscreen Mode"
+msgstr "เต็มหน้าจอ"
+
+msgid "Gender"
+msgstr "เพศ"
+
+msgid "Global"
+msgstr "เสียงทั้งหมด"
+
+msgid "Hair Color"
+msgstr "สีผม"
+
+msgid "Hairstyle"
+msgstr "ทรงผม"
+
+msgid "Health"
+msgstr "พลังชีวิต"
+
+msgid "High Quality Scale"
+msgstr "ขยายภาพแบบเรียบ"
+
+msgid "Level"
+msgstr "ระดับ"
+
+msgid "Lighting"
+msgstr "แสงและเงา"
+
+msgid "Loading..."
+msgstr "กำลังโหลด..."
+
+msgid "Location"
+msgstr "ตำแหน่ง"
+
+msgid "M. Attack"
+msgstr "พลังเวท"
+
+msgid "M. Defense"
+msgstr "ป้องกันเวท"
+
+msgid "Mana"
+msgstr "พลังปราณ"
+
+msgid "Modifiers"
+msgstr "คุณสมบัติเสริม"
+
+msgid "Money"
+msgstr "เงิน"
+
+msgid "Music"
+msgstr "ดนตรี"
+
+msgid "Mute When Unfocused"
+msgstr "ปิดเสียงเมื่อสลับแอป"
+
+msgid "Name"
+msgstr "ชื่อ"
+
+msgid "Network State"
+msgstr "สถานะเครือข่าย"
+
+msgid "Next"
+msgstr "ถัดไป"
+
+msgid "No guild joined"
+msgstr "ยังไม่มีกิลด์"
+
+msgid "No party joined"
+msgstr "ยังไม่มีกลุ่ม"
+
+msgid "Other Fights"
+msgstr "เสียงการต่อสู้อื่น"
+
+msgid "Password"
+msgstr "รหัสผ่าน"
+
+msgid "Preset"
+msgstr "รูปแบบ"
+
+msgid "Previous"
+msgstr "ย้อนกลับ"
+
+msgid "Primary"
+msgstr "ตกลง / โจมตี"
+
+msgid "Race"
+msgstr "เผ่าพันธุ์"
+
+msgid "Refresh"
+msgstr "รีเฟรช"
+
+msgid "Remember me"
+msgstr "จดจำบัญชี"
+
+msgid "Reset"
+msgstr "คืนค่า"
+
+msgid "Reset Code"
+msgstr "รหัสกู้คืน"
+
+msgid "Reset Window Layout"
+msgstr "คืนค่าตำแหน่งหน้าต่าง"
+
+msgid "Save"
+msgstr "บันทึก"
+
+msgid "Scaling"
+msgstr "ขนาดภาพ"
+
+msgid "Secondary"
+msgstr "การกระทำรอง"
+
+msgid "Skin Tone"
+msgstr "สีผิว"
+
+msgid "Slots"
+msgstr "ช่อง"
+
+msgid "Stamina"
+msgstr "ความอึด"
+
+msgid "Stats"
+msgstr "ค่าสถานะ"
+
+msgid "Strength"
+msgstr "กำลัง"
+
+msgid "Tertiary"
+msgstr "การกระทำเสริม"
+
+msgid "Traits"
+msgstr "คุณลักษณะ"
+
+msgid "Type here"
+msgstr "พิมพ์ที่นี่"
+
+msgid "Unequip"
+msgstr "ถอด"
+
+msgid "Use"
+msgstr "ใช้"
+
+msgid "Visual"
+msgstr "ภาพ"
+
+msgid "Vitality"
+msgstr "พละกำลัง"
+
+msgid "Volume"
+msgstr "ระดับเสียง"
+
+msgid "Walk Speed"
+msgstr "ความเร็วเดิน"
+
+msgid "Weight"
+msgstr "น้ำหนัก"
+
+msgid "Window Resolution"
+msgstr "ความละเอียด"
+
+msgid "★ Local Server"
+msgstr "★ เซิร์ฟเวอร์ในเครื่อง"
+
+msgid "Playing Offline"
+msgstr "เล่นออฟไลน์"
+
+msgid "Playing Online"
+msgstr "เล่นออนไลน์"
+
+msgid "Connecting..."
+msgstr "กำลังเชื่อมต่อ..."
+
+msgid "Login"
+msgstr "เข้าสู่เกม"
+
+msgid "Log In"
+msgstr "เข้าสู่เกม"
+
+msgid "Sign In"
+msgstr "เข้าสู่เกม"
+
+msgid "Register"
+msgstr "สมัครบัญชี"
+
+msgid "Create Account"
+msgstr "สร้างบัญชี"
+
+msgid "Create Character"
+msgstr "สร้างตัวละคร"
+
+msgid "Delete Character"
+msgstr "ลบตัวละคร"
+
+msgid "Select Character"
+msgstr "เลือกตัวละคร"
+
+msgid "Play"
+msgstr "เริ่มเล่น"
+
+msgid "Enter"
+msgstr "เข้าเกม"
+
+msgid "Back"
+msgstr "ย้อนกลับ"
+
+msgid "Quit"
+msgstr "ออกจากเกม"
+
+msgid "Exit"
+msgstr "ออก"
+
+msgid "Yes"
+msgstr "ใช่"
+
+msgid "No"
+msgstr "ไม่"
+
+msgid "OK"
+msgstr "ตกลง"
+
+msgid "Close"
+msgstr "ปิด"
+
+msgid "Continue"
+msgstr "ต่อไป"
+
+msgid "Logout"
+msgstr "ออกจากบัญชี"
+
+msgid "Log Out"
+msgstr "ออกจากบัญชี"
+
+msgid "Disconnect"
+msgstr "ตัดการเชื่อมต่อ"
+
+msgid "Settings"
+msgstr "ตั้งค่า"
+
+msgid "Inventory"
+msgstr "กระเป๋า"
+
+msgid "Skills"
+msgstr "ทักษะ"
+
+msgid "Skill"
+msgstr "ทักษะ"
+
+msgid "Emotes"
+msgstr "ท่าทาง"
+
+msgid "Social"
+msgstr "สังคม"
+
+msgid "Progress"
+msgstr "การฝึกฝน"
+
+msgid "Quest Log"
+msgstr "ภารกิจ"
+
+msgid "Quests"
+msgstr "ภารกิจ"
+
+msgid "Manapedia"
+msgstr "บันทึกมอนสเตอร์"
+
+msgid "Chat"
+msgstr "สนทนา"
+
+msgid "Map"
+msgstr "แผนที่"
+
+msgid "Minimap"
+msgstr "แผนที่"
+
+msgid "Account"
+msgstr "บัญชี"
+
+msgid "Audio"
+msgstr "เสียง"
+
+msgid "Video"
+msgstr "ภาพ"
+
+msgid "Controls"
+msgstr "ปุ่มควบคุม"
+
+msgid "Graphics"
+msgstr "กราฟิก"
+
+msgid "General"
+msgstr "ทั่วไป"
+
+msgid "Interface"
+msgstr "หน้าจอ"
+
+msgid "Online"
+msgstr "ออนไลน์"
+
+msgid "Offline"
+msgstr "ออฟไลน์"
+
+msgid "Male"
+msgstr "ชาย"
+
+msgid "Female"
+msgstr "หญิง"
+
+msgid "Non-binary"
+msgstr "ไม่ระบุ"
+
+msgid "Buy"
+msgstr "ซื้อ"
+
+msgid "Sell"
+msgstr "ขาย"
+
+msgid "Trade"
+msgstr "แลกเปลี่ยน"
+
+msgid "Storage"
+msgstr "คลัง"
+
+msgid "Deposit"
+msgstr "ฝาก"
+
+msgid "Withdraw"
+msgstr "ถอน"
+
+msgid "All"
+msgstr "ทั้งหมด"
+
+msgid "None"
+msgstr "ไม่มี"
+
+msgid "Unknown"
+msgstr "ยังไม่ทราบ"
+
+msgid "Short Sword"
+msgstr "ดาบสั้น"
+
+msgid "Cotton Shirt"
+msgstr "เสื้อผ้าฝ้าย"
+
+msgid "Shorts"
+msgstr "กางเกงขาสั้น"
+
+msgid "Desert Boots"
+msgstr "รองเท้าทะเลทราย"
+
+msgid "Desert Goggles"
+msgstr "แว่นกันทราย"
+
+msgid "Water Bottle"
+msgstr "ขวดน้ำ"
+
+msgid "Cactus Sour Candy"
+msgstr "ลูกอมกระบองเพชร"
+
+msgid "Pitaya"
+msgstr "แก้วมังกร"
+
+msgid "Maggot Slime"
+msgstr "เมือกหนอน"
+
+msgid "Cactus Potion"
+msgstr "ยากระบองเพชร"
+
+msgid "Peyote"
+msgstr "กระบองเพชรเดินได้"
+
+msgid "Maggot"
+msgstr "หนอนทราย"
+
+msgid "Tutorial"
+msgstr "วิถีฝึกตนเบื้องต้น"
+
+msgid "Elanore"
+msgstr "เอลานอร์"
+
+msgid "Kael"
+msgstr "คาเอล"
+
+msgid "Ekinu"
+msgstr "เอคินู"
+
+msgid "Elanore's Potions"
+msgstr "ปรุงยาฟื้นพลัง"
+
+msgid "Mine Exploration"
+msgstr "สำรวจเหมือง"
+
+msgid "Tulimshar Gates"
+msgstr "ประตูเมือง"
+
+msgid "Tulimshar"
+msgstr "เมืองเริ่มต้น"
+
+msgid "Get settled in Tulimshar with Elanore's help."
+msgstr "รับชุดจากเอลานอร์ → รับดาบจากคาเอล → กำจัดหนอนและกระบองเพชรอย่างละ 5 ตัว → รับรางวัลและจัดแต้มค่าสถานะ"
+
+msgid "Shows touch buttons on screen for movement and actions."
+msgstr "แสดงปุ่มเดินและปุ่มกระทำบนหน้าจอ"
+
+msgid "Makes the game fill your whole screen."
+msgstr "แสดงเกมเต็มหน้าจอ"
+
+msgid "Sets the size of the game window."
+msgstr "กำหนดขนาดหน้าต่างเกม"
+
+msgid "Smooths the image when the view is scaled up."
+msgstr "ปรับภาพให้เรียบเมื่อขยาย"
+
+msgid "Turns on dynamic lights and shadows."
+msgstr "เปิดแสงและเงา"
+
+msgid "Adds an old television screen look."
+msgstr "จำลองภาพจอโทรทัศน์เก่า"
+
+msgid "Silences the game while its window is in the background."
+msgstr "ปิดเสียงเมื่อใช้งานแอปอื่น"
+
+msgid "Resets all game windows to their default size and position."
+msgstr "คืนขนาดและตำแหน่งหน้าต่างทั้งหมด"
+
+msgid "Sets the volume of the background music."
+msgstr "ปรับระดับเสียงดนตรี"
+
+msgid "Sets the volume of every sound in the game at once."
+msgstr "ปรับระดับเสียงทั้งหมด"
+
+msgid "Sets the volume of combat feedback like hits, crits, dodges and heals."
+msgstr "ปรับเสียงโจมตี หลบหลีก และฟื้นพลัง"
+
+msgid "Sets the volume of creatures and surrounding objects: attacks, deaths and chests opening."
+msgstr "ปรับเสียงสิ่งมีชีวิตและวัตถุรอบตัว"
+
+msgid "Sets the volume of alerts meant for you: whispers, level ups, skill ups and quest updates."
+msgstr "ปรับเสียงแจ้งเตือนระดับ ทักษะ และภารกิจ"
+
+msgid "Sets the volume of fights you are not part of. Your own actions and your target stay at full volume."
+msgstr "ปรับเสียงการต่อสู้ของผู้อื่น"
+
+msgid "Zooms the whole game view by one, two or three times."
+msgstr "ขยายภาพเกม 1 ถึง 3 เท่า"
+
+msgid "Type your current password so we know it is really you."
+msgstr "กรอกรหัสผ่านปัจจุบัน"
+
+msgid "Type the new password you want to use from now on."
+msgstr "กรอกรหัสผ่านใหม่"
+
+msgid "Type your new password again so it can be checked for typos."
+msgstr "กรอกรหัสผ่านใหม่อีกครั้ง"
+
+msgid "Saves your new password."
+msgstr "บันทึกรหัสผ่านใหม่"
+
+msgid "Sends anonymous crash and error reports to help fix bugs. No personal data is collected."
+msgstr "ส่งรายงานข้อผิดพลาดแบบไม่ระบุตัวตน"
+
+msgid "Connects to a dedicated server running on this machine (127.0.0.1) instead of the public server."
+msgstr "เชื่อมต่อเซิร์ฟเวอร์ในเครื่องนี้"
+
+msgid "Creatures & Objects"
+msgstr "สิ่งมีชีวิตและวัตถุ"
+
+msgid " Confirm Password"
+msgstr " ยืนยันรหัสผ่าน"
+
+msgid " Current Password"
+msgstr " รหัสผ่านปัจจุบัน"
+
+msgid " New Password"
+msgstr " รหัสผ่านใหม่"
+
+msgid " Scaling"
+msgstr " ขนาดภาพ"
+
+msgid " Window Resolution"
+msgstr " ความละเอียด"
+
+msgid "Create"
+msgstr "สร้าง"
+
+msgid "Connect"
+msgstr "เข้าเกม"
+
+msgid "Switch Online"
+msgstr "เปลี่ยนเป็นออนไลน์"
+
+msgid "Switch Offline"
+msgstr "เปลี่ยนเป็นออฟไลน์"
+
+msgid "Send Code"
+msgstr "ส่งรหัส"
+
+msgid "Reset Password"
+msgstr "ตั้งรหัสผ่านใหม่"
+
+msgid "Forgot Password"
+msgstr "ลืมรหัสผ่าน"
+
+msgid "Randomize"
+msgstr "สุ่มรูปลักษณ์"
+
+msgid "Select"
+msgstr "เลือก"
+
+msgid "New Player"
+msgstr "ตัวละครใหม่"
+
+msgid "Delete Player"
+msgstr "ลบตัวละคร"
+
+msgid "Stay"
+msgstr "เล่นต่อ"
+
+msgid "Used"
+msgstr "ใช้แล้ว"
+
+msgid "Sprint"
+msgstr "วิ่งเร็ว"
+
+msgid "Melee"
+msgstr "โจมตีประชิด"
+
+msgid "Jump"
+msgstr "กระโดด"
+
+msgid "Sonic Scream"
+msgstr "เสียงกรีดร้อง"
+
+msgid "Leaf Blades"
+msgstr "คมมีดใบไม้"
+
+msgid "Mana Burst"
+msgstr "ระเบิดปราณ"
+
+msgid "Morph"
+msgstr "แปลงกาย"
+
+msgid "Lv. %d"
+msgstr "ระดับ %d"
+
+msgid "Invalid token, enter your password"
+msgstr "กรุณากรอกรหัสผ่านอีกครั้ง"
+
+msgid "Another connection happened with the same login."
+msgstr "บัญชีนี้ถูกใช้งานจากที่อื่น"
+
+msgid "Invalid account name or password."
+msgstr "ชื่อบัญชีหรือรหัสผ่านไม่ถูกต้อง"
+
+msgid "Password should not include control characters such as tabs or line breaks."
+msgstr "รหัสผ่านห้ามมีแท็บหรือขึ้นบรรทัดใหม่"
+
+msgid "Password length should be inbetween %d and %d character long."
+msgstr "รหัสผ่านต้องยาว %d ถึง %d ตัวอักษร"
+
+msgid "Account name not available."
+msgstr "ชื่อบัญชีนี้ถูกใช้แล้ว"
+
+msgid "Name should should only include alpha-numeric characters and symbols."
+msgstr "กรุณาใช้ตัวอักษร ตัวเลข หรือสัญลักษณ์ที่ระบบรองรับ"
+
+msgid "Name length should be inbetween %d and %d character long."
+msgstr "ชื่อต้องยาว %d ถึง %d ตัวอักษร"
+
+msgid "Passwords do not match."
+msgstr "รหัสผ่านทั้งสองช่องไม่ตรงกัน"
+
+msgid "Email is incorrect, please us a normal email format."
+msgstr "รูปแบบอีเมลไม่ถูกต้อง"
+
+msgid "Password reset is not available on this server."
+msgstr "เซิร์ฟเวอร์นี้ยังไม่รองรับการกู้รหัสผ่าน"
+
+msgid "If this email is registered, a reset code has been sent. Check your inbox."
+msgstr "หากอีเมลนี้มีบัญชี ระบบจะส่งรหัสกู้คืนให้ โปรดตรวจกล่องจดหมาย"
+
+msgid "Invalid or expired reset code."
+msgstr "รหัสกู้คืนไม่ถูกต้องหรือหมดอายุ"
+
+msgid "Password updated successfully. You can now log in."
+msgstr "เปลี่ยนรหัสผ่านแล้ว เข้าสู่เกมได้เลย"
+
+msgid "Character is already logged in."
+msgstr "ตัวละครนี้อยู่ในเกมแล้ว"
+
+msgid "Could not connect to the server (Error %d)."
+msgstr "เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ (รหัส %d)"
+
+msgid "Some character information are missing."
+msgstr "ข้อมูลตัวละครไม่ครบ"
+
+msgid "Character name not available."
+msgstr "ชื่อตัวละครนี้ถูกใช้แล้ว"
+
+msgid "Any time spent in the real world is less time spent in the mana world!"
+msgstr "ต้องการออกจากเกมหรือไม่?"
+
+msgid "Max Health"
+msgstr "ชีวิตสูงสุด"
+
+msgid "Max Mana"
+msgstr "ปราณสูงสุด"
+
+msgid "Max Stamina"
+msgstr "ความอึดสูงสุด"
+
+msgid "Atk Range"
+msgstr "ระยะโจมตี"
+
+msgid "Cooldown"
+msgstr "เวลาพัก"
+
+msgid "HP Regen"
+msgstr "ฟื้นชีวิต"
+
+msgid "MP Regen"
+msgstr "ฟื้นปราณ"
+
+msgid "SP Regen"
+msgstr "ฟื้นความอึด"
+
+msgid "Carry Weight"
+msgstr "น้ำหนักที่แบกได้"
+

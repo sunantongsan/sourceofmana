@@ -33,18 +33,18 @@ func FillWarningLabel(err : NetworkCommons.CharacterError):
 		NetworkCommons.CharacterError.ERR_ALREADY_LOGGED_IN:
 			warn = "Character is already logged in."
 		NetworkCommons.CharacterError.ERR_TIMEOUT:
-			warn = "Could not connect to the server (Error %d)." % err
+			warn = "เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ (รหัส %d)" % err
 		NetworkCommons.CharacterError.ERR_MISSING_PARAMS:
-			warn = "Some character information are missing."
+			warn = "ข้อมูลตัวละครไม่ครบ"
 			RequestFocus(characterNameLineEdit)
 		NetworkCommons.CharacterError.ERR_NAME_AVAILABLE:
 			warn = "Character name not available."
 			RequestFocus(characterNameLineEdit)
 		NetworkCommons.CharacterError.ERR_NAME_VALID:
-			warn = "Name should should only include alpha-numeric characters and symbols."
+			warn = "กรุณาใช้ตัวอักษร ตัวเลข หรือสัญลักษณ์ที่ระบบรองรับ"
 			RequestFocus(characterNameLineEdit)
 		NetworkCommons.CharacterError.ERR_NAME_SIZE:
-			warn = "Name length should be inbetween %d and %d character long." % [NetworkCommons.PlayerNameMinSize, NetworkCommons.PlayerNameMaxSize]
+			warn = "ชื่อต้องยาว %d ถึง %d ตัวอักษร" % [NetworkCommons.PlayerNameMinSize, NetworkCommons.PlayerNameMaxSize]
 			RequestFocus(characterNameLineEdit)
 		NetworkCommons.CharacterError.ERR_EMPTY_ACCOUNT:
 			EnableCharacterCreator(true)

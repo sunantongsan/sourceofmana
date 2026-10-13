@@ -20,8 +20,8 @@ func TrackPlayer(player : PlayerAgent):
 
 	var rid : int = player.get_rid().get_id()
 	if not trackedTargets.has(rid):
-		peyoteKills[rid] = 0
-		maggotKills[rid] = 0
+		peyoteKills[rid] = player.progress.GetBestiary(peyoteID)
+		maggotKills[rid] = player.progress.GetBestiary(maggotID)
 		trackedTargets[rid] = DB.UnknownHash
 
 	if not player.enemy_killed.is_connected(OnEnemyKilled):
@@ -57,13 +57,8 @@ func GetKillCount(player : PlayerAgent, monsterID : int) -> int:
 	if not player:
 		return 0
 
-	var rid : int = player.get_rid().get_id()
-	match monsterID:
-		peyoteID:
-			return peyoteKills.get(rid, 0)
-		maggotID:
-			return maggotKills.get(rid, 0)
-	return 0
+	# Lifetime bestiary counts survive logout and map changes.
+	return player.progress.GetBestiary(monsterID)
 
 #
 func OnEnemyKilled(player : PlayerAgent, monsterID : int):
@@ -104,8 +99,8 @@ func OnTargetSelected(player : PlayerAgent, target : BaseAgent):
 func RefreshTracker(player : PlayerAgent, monsterID : int = DB.UnknownHash):
 	match monsterID:
 		peyoteID:
-			NpcCommons.PushTracker(player, "Peyote", GetKillCount(player, monsterID), PEYOTE_REQUIRED)
+			NpcCommons.PushTracker(player, "กระบองเพชรเดินได้", GetKillCount(player, monsterID), PEYOTE_REQUIRED)
 		maggotID:
-			NpcCommons.PushTracker(player, "Maggot", GetKillCount(player, monsterID), MAGGOT_REQUIRED)
+			NpcCommons.PushTracker(player, "หนอนทราย", GetKillCount(player, monsterID), MAGGOT_REQUIRED)
 		_:
 			NpcCommons.ClearTracker(player)

@@ -68,7 +68,7 @@ import/fbx/enabled=false
 [gui]
 
 theme/default_font_subpixel_positioning=0
-theme/default_font_antialiased=false
+theme/default_font_antialiased=true
 
 [importer_defaults]
 
@@ -92,6 +92,13 @@ texture={
 "stream": false,
 "svg/scale": 1.0
 }
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://data/translations/th.po")
+locale/fallback="th"
+locale/locale_filter_mode=1
+locale/locale_filter=PackedStringArray("th")
 
 [input]
 
