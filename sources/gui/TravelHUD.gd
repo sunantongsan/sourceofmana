@@ -81,6 +81,9 @@ func StopCombat(notifyServer : bool = true):
 	Launcher.Action.previousMove = Vector2.ZERO
 
 func Toggle():
+	var character = Launcher.GUI.get_node_or_null("CharacterHUD")
+	if character:
+		character.Close()
 	var shop = Launcher.GUI.get_node_or_null("SupplyShopHUD")
 	if shop:
 		shop.Close()

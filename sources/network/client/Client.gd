@@ -402,6 +402,9 @@ func RefreshProgress(skills : Dictionary, quests : Dictionary, bestiary : Dictio
 
 #
 func CommandFeedback(feedback : String, _peerID : int):
+	var character = Launcher.GUI.get_node_or_null("CharacterHUD") if Launcher.GUI else null
+	if character and feedback.begins_with("สกิล:"):
+		character.feedback.text = feedback
 	var shop = Launcher.GUI.get_node_or_null("SupplyShopHUD") if Launcher.GUI else null
 	if shop and (feedback.begins_with("GM:") or feedback.begins_with("ร้านค้า:")):
 		shop.feedback.text = feedback

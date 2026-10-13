@@ -85,6 +85,10 @@ func CloseCurrent():
 			ToggleControl(control)
 
 func GoBack():
+	var character = get_node_or_null("CharacterHUD")
+	if character and character.panel.visible:
+		character.Close()
+		return
 	var shop = get_node_or_null("SupplyShopHUD")
 	if shop and shop.panel.visible:
 		shop.Close()
@@ -343,7 +347,10 @@ func _ready():
 	add_child(preload("res://sources/gui/CombatHUD.gd").new())
 	add_child(preload("res://sources/gui/TrainingGuide.gd").new())
 	add_child(preload("res://sources/gui/TravelHUD.gd").new())
-	Launcher.dbInitialized.connect(func(): add_child(preload("res://sources/gui/SupplyShopHUD.gd").new()), CONNECT_ONE_SHOT)
+	Launcher.dbInitialized.connect(func():
+		add_child(preload("res://sources/gui/SupplyShopHUD.gd").new())
+		add_child(preload("res://sources/gui/CharacterHUD.gd").new())
+	, CONNECT_ONE_SHOT)
 	get_tree().set_auto_accept_quit(false)
 	get_tree().set_quit_on_go_back(false)
 	DisplayServer.pip_mode_set_auto_enter_on_background(true)

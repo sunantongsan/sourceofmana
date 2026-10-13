@@ -61,6 +61,9 @@ func AddShortcut(container : Container, caption : String, callback : Callable):
 	container.add_child(button)
 
 func ToggleGuide():
+	var character = Launcher.GUI.get_node_or_null("CharacterHUD")
+	if character:
+		character.Close()
 	var shop = Launcher.GUI.get_node_or_null("SupplyShopHUD")
 	if shop:
 		shop.Close()

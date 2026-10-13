@@ -38,6 +38,8 @@ static func GetDamage(agent : BaseAgent, target : BaseAgent, skill : SkillCell, 
 		skillValue = skill.modifiers.Get(CellCommons.Modifier.Attack)
 		info.value = max(1, agent.stat.current.attack + skillValue - target.stat.current.defense)
 
+	info.value = ceili(info.value * SkillTraining.Multiplier(agent, skill))
+
 	if randf() < Formula.GetEvadeRate(agent.stat, target.stat):
 		info.type = ActorCommons.Alteration.DODGE
 		info.value = 0

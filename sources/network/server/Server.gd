@@ -331,6 +331,9 @@ func TriggerExplore(peerID : int):
 
 func TriggerSkill(targetRID : int, skillID : int, peerID : int):
 	var player : PlayerAgent = Peers.GetAgent(peerID)
+	if skillID == SkillTraining.ACTION.hash():
+		SkillTraining.Upgrade(player, targetRID)
+		return
 	if skillID == SupplyShop.ACTION.hash():
 		SupplyShop.Buy(player, targetRID)
 		return
@@ -371,7 +374,7 @@ func UseItem(itemID : int, peerID : int):
 	if cell and cell.usable:
 		var player : PlayerAgent = Peers.GetAgent(peerID)
 		if player and ActorCommons.IsAlive(player) and player.inventory:
-			player.inventory.UseItem(cell)
+			QuickPotion.Use(player, cell)
 
 func DropItem(itemID : int, customfield : StringName, itemCount : int, itemIndex : int, peerID : int):
 	var cell : ItemCell = DB.GetItem(itemID, customfield)

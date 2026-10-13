@@ -421,4 +421,8 @@ func run():
 	assert(agent.meleeCommittedTargetRID == 0, "No starting a melee strike from far away")
 	assert(not Skill.CanFollowThrough(agent, moving, melee))
 	print("MOVING_TARGET_MELEE_AND_RANGE_GUARD_PASS")
+	await ExtraChecks(agent)
 	Launcher.Quit()
+
+func ExtraChecks(_agent : PlayerAgent):
+	pass

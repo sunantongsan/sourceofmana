@@ -7,6 +7,7 @@ extends Control
 @onready var button : TouchScreenButton	= $TouchButton
 
 var levelLabel: Label
+var portrait : Control
 
 #
 func Refresh():
@@ -27,7 +28,9 @@ func SetBarsVisible(isVisible : bool):
 	hpStat.set_visible(isVisible)
 	manaStat.set_visible(isVisible)
 	staminaStat.set_visible(isVisible)
-	expStat.set_visible(isVisible)
+	expStat.hide()
+	if portrait:
+		portrait.visible = isVisible
 	button.set_visible(isVisible)
 	if levelLabel:
 		levelLabel.visible = isVisible
@@ -39,6 +42,11 @@ func _post_launch():
 			Launcher.Map.PlayerWarped.connect(Connect)
 
 func _ready():
+	expStat.hide()
+	portrait = preload("res://sources/gui/CharacterPortrait.gd").new()
+	portrait.position = Vector2(3, 4)
+	portrait.size = Vector2(54, 54)
+	add_child(portrait)
 	levelLabel = Label.new()
 	levelLabel.position = Vector2(52, 64)
 	levelLabel.add_theme_font_size_override("font_size", 16)
@@ -51,4 +59,4 @@ func _ready():
 	_post_launch()
 
 func _on_button_pressed():
-	Launcher.GUI.ToggleControl(Launcher.GUI.statWindow)
+	Launcher.GUI.get_node("CharacterHUD").Toggle()

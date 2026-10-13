@@ -99,3 +99,20 @@ func _press_button(buttonId : JoyButton):
 func _release_button(buttonId : JoyButton):
 	heldButtons.erase(buttonId)
 	DeviceManager.SendEventJoy(buttonId, false)
+
+func _ready():
+	var image : Image = preload("res://data/graphics/gui/icon/inventory.png").get_image()
+	image.resize(48, 48, Image.INTERPOLATE_NEAREST)
+	buttonLeft.texture_normal = ImageTexture.create_from_image(image)
+	buttonLeft.texture_pressed = buttonLeft.texture_normal
+
+func _open_inventory():
+	if not FSM.IsGameState() or Launcher.GUI.IsDialogueContextOpened():
+		return
+	ReleaseControls()
+	Launcher.GUI.get_node("CombatHUD").SetAutoMode(0)
+	Network.ClearNavigation()
+	Launcher.GUI.inventoryWindow.get_node("Layout/Margin/HBoxContainer/ItemsBox/TabContainer").current_tab = 0
+	Launcher.GUI.inventoryWindow.currentFilter = Launcher.GUI.inventoryWindow.FilterTab.ALL
+	Launcher.GUI.ToggleControl(Launcher.GUI.inventoryWindow)
+	Launcher.GUI.inventoryWindow.RefreshInventory()

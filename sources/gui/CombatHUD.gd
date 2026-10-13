@@ -5,6 +5,8 @@ const SKILLS : Array[String] = ["Mana Burst", "Leaf Blades", "Sonic Scream"]
 const SKILL_LABELS : Array[String] = ["ปราณม่วง", "กระบี่หยก", "กระบี่คราม"]
 enum AutoMode { OFF, NORMAL, SKILLS }
 var autoMode : AutoMode = AutoMode.OFF
+var potionButtons : Array[Control] = []
+var potionWait := 0.0
 var attackButton : Control
 var skillButtons : Array[Control] = []
 var autoButtons : Array[Button] = []
@@ -54,8 +56,8 @@ func _ready():
 		var positions : Array[Vector2] = [Vector2(134, 208), Vector2(130, 116), Vector2(222, 84)]
 		skillButtons.append(AddCircle(SKILL_LABELS[idx], positions[idx], 72, SKILLS[idx], ManualSkill.bind(idx)))
 	AddCircle("เป้าหมาย", Vector2(282, 58), 44, "", NextTarget)
-	AddCircle("โต้ตอบ", Vector2(56, 215), 60, "", Interact)
-	AddCircle("เก็บของ", Vector2(1, 230), 50, "", Pickup)
+	potionButtons.append(AddCircle("เลือด", Vector2(56, 215), 60, "", UsePotion.bind(false)))
+	potionButtons.append(AddCircle("ปราณ", Vector2(1, 230), 50, "", UsePotion.bind(true)))
 	AddCircle("พัก", Vector2(75, 150), 50, "", Sit)
 	SetAutoMode(AutoMode.OFF)
 
@@ -73,6 +75,9 @@ func AddCircle(caption : String, pos : Vector2, diameter : float, skillName : St
 	return button
 
 func OverlayOpen() -> bool:
+	var character = Launcher.GUI.get_node_or_null("CharacterHUD")
+	if character and character.panel.visible:
+		return true
 	var shop = Launcher.GUI.get_node_or_null("SupplyShopHUD")
 	if shop and shop.panel.visible:
 		return true
@@ -124,6 +129,17 @@ func ManualSkill(idx : int):
 func NextTarget():
 	if ReadyForCombat():
 		Entities.Target(Launcher.Player.position, false, true)
+
+func UsePotion(mana : bool):
+	if not ReadyForCombat() or potionWait > 0:
+		return
+	var cell : ItemCell = QuickPotion.Choose(Launcher.Player, mana)
+	if not cell:
+		return
+	if (mana and Launcher.Player.stat.mana >= Launcher.Player.stat.current.maxMana) or (not mana and Launcher.Player.stat.health >= Launcher.Player.stat.current.maxHealth):
+		return
+	potionWait = QuickPotion.COOLDOWN
+	Network.UseItem(cell.id)
 
 func Interact():
 	SetAutoMode(AutoMode.OFF)
@@ -202,6 +218,17 @@ func _process(delta : float):
 	for skillID in cooldowns:
 		cooldowns[skillID] = maxf(0, cooldowns[skillID] - delta)
 	requestWait = maxf(0, requestWait - delta)
+	potionWait = maxf(0, potionWait - delta)
+	for idx in potionButtons.size():
+		var cell : ItemCell = QuickPotion.Choose(Launcher.Player, idx == 1)
+		var potion : Control = potionButtons[idx]
+		var count : int = Launcher.Player.inventory.GetItem(cell).count if cell else 0
+		potion.icon = cell.icon if cell else DB.GetItem(("ยาฟื้นปราณ" if idx == 1 else "Cactus Potion").hash()).icon
+		potion.caption = ("ปราณ" if idx == 1 else "เลือด") + " ×%d" % count
+		potion.cooldown = potionWait
+		potion.cooldownMax = QuickPotion.COOLDOWN
+		potion.unavailable = count == 0 or potionWait > 0
+		potion.Refresh()
 	if not ReadyForCombat():
 		if autoMode != AutoMode.OFF or pendingSkill != DB.UnknownHash:
 			SetAutoMode(AutoMode.OFF)
