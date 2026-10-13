@@ -24,7 +24,8 @@ func _process(delta : float):
 		entity.visual.Refresh()
 	if flying:
 		phase += delta
-		entity.visual.position = basePosition + Vector2(0, -18 + sin(phase * 3) * 1.5)
+		position = basePosition + Vector2(0, -18 + sin(phase * 3) * 1.5)
+		entity.visual.position = position
 		rotation = entity.entityOrientation.angle()
 		queue_redraw()
 
