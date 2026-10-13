@@ -127,11 +127,11 @@ jobs:
           cp -r /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
           if [ -n "$DEBUG_KEYSTORE" ]; then
             echo "$DEBUG_KEYSTORE" | base64 -d > /root/debug.keystore
-          elif [ "$MODE" = "debug" ]; then
+          elif [ "$MODE" = "debug" ] && ! keytool -list -keystore /root/debug.keystore -storepass android -alias androiddebugkey >/dev/null 2>&1; then
             keytool -genkeypair -v -keystore /root/debug.keystore -alias androiddebugkey \
               -keyalg RSA -keysize 2048 -validity 10000 -storepass android -keypass android \
               -dname "CN=Android Debug,O=Android,C=US" -storetype pkcs12
-          else
+          elif [ "$MODE" != "debug" ]; then
             echo "SECRET_RELEASE_KEYSTORE_BASE64 is required for release exports" && exit 1
           fi
         env:
