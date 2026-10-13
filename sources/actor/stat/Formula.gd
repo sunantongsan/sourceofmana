@@ -2,19 +2,19 @@ extends RefCounted
 class_name Formula
 
 #
-const attributePointsBase : int					= 4
-const attributePointPerLevel : int				= 1
-const attributeLevelCap : int					= 50
+const attributePointsBase : int					= 2
+const attributePointPerLevel : int				= 3
+const attributeLevelCap : int					= 100
 const coefAttackPerAttribute : float			= 3.0
-const coefAttackPerLevel : float				= 0.4
+const coefAttackPerLevel : float				= 3.0
 const coefDefensePerAttribute : float			= 2.0
-const coefDefensePerLevel : float				= 0.3
+const coefDefensePerLevel : float				= 1.5
 const coefHealthPerAttribute : float			= 10.0
-const coefHealthPerLevel : float				= 2.0
+const coefHealthPerLevel : float				= 20.0
 const coefManaPerAttribute : float				= 5.0
-const coefManaPerLevel : float					= 1.0
+const coefManaPerLevel : float					= 4.0
 const coefStaminaPerAttribute : float			= 5.0
-const coefStaminaPerLevel : float				= 1.0
+const coefStaminaPerLevel : float				= 3.0
 const coefRatePerAttribute : float				= 0.005
 const coefRatePerLevel : float					= 0.001
 const coefDelayPerAttribute : float				= 0.01
@@ -80,13 +80,15 @@ static func GetRegenStamina(stat : ActorStats) -> int:
 	return GetRegen(stat, CellCommons.Modifier.RegenStamina, stat.endurance * 2 + FFifth(stat.level) + FPercent(GetMaxStamina(stat) * coefRegenStamina))
 
 static func GetCooldownAttackDelay(stat : ActorStats) -> float:
-	return maxf(0.001, stat.morphStat.cooldownAttackDelay - stat.endurance * coefDelayPerAttribute - stat.level * coefDelayPerLevel) + stat.modifiers.Get(CellCommons.Modifier.CooldownDelay, true)
+	return maxf(0.18, stat.morphStat.cooldownAttackDelay - stat.endurance * coefDelayPerAttribute - stat.level * coefDelayPerLevel) + stat.modifiers.Get(CellCommons.Modifier.CooldownDelay, true)
 
 # Vitality related stats
 static func GetMaxHealth(stat : ActorStats) -> int:
 	return stat.morphStat.maxHealth + F(stat.vitality * coefHealthPerAttribute + stat.level * coefHealthPerLevel) + stat.modifiers.Get(CellCommons.Modifier.MaxHealth, true)
 
 static func GetRegenHealth(stat : ActorStats) -> int:
+	if stat.actor and stat.actor.type == ActorCommons.Type.MONSTER:
+		return 0
 	return GetRegen(stat, CellCommons.Modifier.RegenHealth, 1 + FHalf(stat.vitality) + FPercent(GetMaxHealth(stat) * coefRegenHealth))
 
 static func GetDefense(stat : ActorStats) -> int:
@@ -94,7 +96,7 @@ static func GetDefense(stat : ActorStats) -> int:
 
 # Agility related stats
 static func GetCastAttackDelay(stat : ActorStats) -> float:
-	return maxf(0.001, stat.morphStat.castAttackDelay - stat.agility * coefDelayPerAttribute - stat.level * coefDelayPerLevel) + stat.modifiers.Get(CellCommons.Modifier.CastDelay, true)
+	return maxf(0.18, stat.morphStat.castAttackDelay - stat.agility * coefDelayPerAttribute - stat.level * coefDelayPerLevel) + stat.modifiers.Get(CellCommons.Modifier.CastDelay, true)
 
 static func GetDodgeRate(stat : ActorStats) -> float:
 	if stat.morphStat.dodgeRate <= 0.0:
@@ -165,6 +167,8 @@ static func ApplyXp(agent : AIAgent):
 			var damageRatio : float = agent.GetDamageRatio(entry.attacker)
 			var bonusScaled : int = int(bonus * damageRatio)
 			entry.attacker.stat.AddExperience(bonusScaled, false)
+			if entry.attacker is PlayerAgent:
+				entry.attacker.stat.AddGP(maxi(1, int((2 + agent.stat.level * 2) * damageRatio)), false)
 			if damageRatio > 0.5 and entry.attacker.progress:
 				entry.attacker.progress.AddBestiary(agent.data._id, 1)
 				entry.attacker.enemy_killed.emit(entry.attacker, agent.data._id)

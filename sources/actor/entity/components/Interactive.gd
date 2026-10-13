@@ -162,6 +162,10 @@ func DisplayBuff(effect : CellCommons.Modifier, skillID : int, enabled : bool):
 
 func DisplayCast(skillID : int):
 	StopCasting()
+	if skillID in ["Mana Burst".hash(), "Leaf Blades".hash(), "Sonic Scream".hash()]:
+		entity.visual.BeginSpellPose(false)
+	elif skillID == DB.UnknownHash and not entity.visual.spellRelease:
+		entity.visual.EndSpellPose()
 	if skillID == "Melee".hash():
 		entity.visual.BeginStrike()
 	elif skillID == DB.UnknownHash:
@@ -180,6 +184,8 @@ func DisplayCast(skillID : int):
 				add_child(currentCastFx)
 
 func DisplaySkill(emitter : Entity, skillID : int, cooldown : float):
+	if skillID in ["Mana Burst".hash(), "Leaf Blades".hash(), "Sonic Scream".hash()]:
+		emitter.visual.BeginSpellPose(true)
 	var effect := ""
 	if skillID == "Melee".hash() and emitter.type == ActorCommons.Type.PLAYER:
 		effect = "slash"
@@ -293,6 +299,8 @@ func TweenSpeechOffset(target : float):
 
 #
 func DisplayHP():
+	if entity.type == ActorCommons.Type.MONSTER:
+		nameLabel.text = "%s  •  Lv.%d" % [tr(entity.nick), entity.stat.level]
 	if hpFadeTween:
 		hpFadeTween.kill()
 		hpFadeTween = null
@@ -301,7 +309,7 @@ func DisplayHP():
 		return
 
 	if Launcher.Player:
-		if Entities.target != entity:
+		if Entities.target != entity and entity.type != ActorCommons.Type.MONSTER:
 			Callback.SelfDestructTimer(healthBar, ActorCommons.DisplayHPDelay, HideHP, [], "HideHP")
 		if entity.stat.level >= Launcher.Player.stat.level and ActorCommons.LevelDifferenceColor:
 			nameLabel.modulate = lerp(Color.WHITE, Color.RED, (entity.stat.level - Launcher.Player.stat.level) / ActorCommons.LevelDifferenceColor)
@@ -328,6 +336,8 @@ func RefreshHP():
 		DisplayHP()
 
 func HideHP():
+	if entity.type == ActorCommons.Type.MONSTER and ActorCommons.IsAlive(entity) and entity.stat.health > 0:
+		return
 	if not healthBar.visible:
 		return
 	if hpFadeTween:
@@ -351,7 +361,7 @@ func DisplaySailContext():
 
 #
 func Init(data : EntityData):
-	displayName = (entity.type == ActorCommons.Type.PLAYER or data._displayName) and entity != Launcher.Player
+	displayName = (entity.type in [ActorCommons.Type.PLAYER, ActorCommons.Type.MONSTER] or data._displayName) and entity != Launcher.Player
 
 	if nameLabel:
 		nameLabel.set_text(entity.nick)
@@ -366,6 +376,8 @@ func Init(data : EntityData):
 		if not entity.visual.spriteOffsetUpdate.is_connected(RefreshVisibleNodeOffset):
 			entity.visual.spriteOffsetUpdate.connect(RefreshVisibleNodeOffset)
 		RefreshVisibleNodeOffset()
+	if entity.type == ActorCommons.Type.MONSTER:
+		DisplayHP()
 
 	if clickShape:
 		clickShape.shape.radius = max(data._radius * 1.1, ActorCommons.targetRadius)

@@ -390,7 +390,7 @@ const PickupSquaredDistance : float			= 48 * 48 # 1.5 Tile squared length
 
 # Stats
 const MaxStatValue : int					= 1 << 32
-const MaxPointPerAttributes : int			= 20
+const MaxPointPerAttributes : int			= 100
 const InventorySize : int					= 100
 const RunningStaminaCostPerSecond : int		= 5
 

@@ -100,6 +100,8 @@ func SpawnEntity(agentRID : int, entry : EntityCacheEntry) -> Entity:
 	var isLocalPlayer : bool = isPlayerType and entry.nick == Launcher.GUI.characterPanel.characterNameDisplay.get_text()
 
 	var entity : Entity = Instantiate.CreateEntity(entry.actorType, entityData, entityData._name if entry.nick.is_empty() else entry.nick, isLocalPlayer)
+	if entry.actorType == ActorCommons.Type.MONSTER:
+		Hunting.ApplyMonster(entity, currentMapID)
 	entity.agentRID = agentRID
 	entity.defaultState = entry.defaultState
 	entity.stat.shape = shape

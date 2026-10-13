@@ -13,7 +13,16 @@ const POINTS : Array[Dictionary] = [
 	{"title":"ใจกลางเมือง", "map":"Tulimshar Center", "pos":Vector2(1500, 4230)},
 	{"title":"ท่าเรือ", "map":"Tulimshar Bay", "pos":Vector2(1440, 3250)},
 	{"title":"หน้าปราสาท", "map":"Tulimshar", "pos":Vector2(1450, 1460)},
-	{"title":"ลานฝึกนอกเมือง", "map":"Sandstorm", "pos":Vector2(3040, 1050)}
+	{"title":"ลานฝึกนอกเมือง", "map":"Sandstorm", "pos":Vector2(3040, 1050)},
+	{"title":"ชายฝั่งฝึกปราณ • Lv.11–20", "map":"Tulimshar Beach", "pos":Vector2(2538, 1141)},
+	{"title":"เนินเขาตะวันตก • Lv.21–30", "map":"Tulimshar Western Hills", "pos":Vector2(1556, 3000)},
+	{"title":"เนินเขาตะวันออก • Lv.31–40", "map":"Tulimshar Eastern Hills", "pos":Vector2(2293, 3139)},
+	{"title":"หุบเขาทิศใต้ • Lv.41–50", "map":"Tulimshar Southern Hills", "pos":Vector2(2022, 1591)},
+	{"title":"เหมืองปราณ • Lv.51–60", "map":"Desert Mines", "pos":Vector2(1280, 1216)},
+	{"title":"ภูเขาทะเลทราย • Lv.61–70", "map":"Desert Mountains", "pos":Vector2(1790, 1216)},
+	{"title":"หุบเหวอสูร • Lv.71–80", "map":"Desert Pit", "pos":Vector2(3061, 3160)},
+	{"title":"ถ้ำหลอมเซียน • Lv.81–90", "map":"Desert Mountain Cave", "pos":Vector2(3476, 794)},
+	{"title":"ถ้ำปรมาจารย์ • Lv.91–100", "map":"Splatyna's Chamber", "pos":Vector2(1733, 1539)}
 ]
 const OUTDOORS : Array[String] = ["Tulimshar", "Tulimshar Center", "Tulimshar Bay", "Sandstorm", "Tulimshar Beach", "Tulimshar Western Hills", "Tulimshar Eastern Hills", "Tulimshar Southern Hills", "Desert Mountains", "Manayir", "Manayir Beach", "Artis", "Drazil"]
 

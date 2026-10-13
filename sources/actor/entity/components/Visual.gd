@@ -28,6 +28,9 @@ var equipmentEffects : Array[Node2D]		= []
 var skillCastID : int						= DB.UnknownHash
 var attackAnimLength : float				= 1.0
 var strikeTween : Tween = null
+var spellPose := false
+var spellRelease := false
+var spellAge := 0.0
 
 var originalAnimationLib : AnimationLibrary	= null
 var defaultHframes : Dictionary				= {}
@@ -46,6 +49,7 @@ func LoadSpriteSlot(slot : ActorCommons.Slot, sprite : Sprite2D):
 				spriteOffsetUpdate.emit()
 
 func ResetData():
+	EndSpellPose()
 	StopStrike()
 	if preset:
 		preset.queue_free()
@@ -351,6 +355,8 @@ func RefreshTree(resetOnTeleport : bool = true):
 				animationTree.advance(randValue)
 
 func Refresh():
+	if spellPose:
+		return
 	if not animationTree or not animationTree.is_inside_tree():
 		return
 
@@ -441,6 +447,7 @@ func _init():
 
 # Translate the complete layered sprite together so equipment stays on the body.
 func BeginStrike():
+	EndSpellPose()
 	if entity.type != ActorCommons.Type.PLAYER or entity.stat.IsMorph() or Travel.IsFlying(entity) or not is_instance_valid(preset):
 		return
 	StopStrike()
@@ -457,3 +464,53 @@ func StopStrike():
 		strikeTween = null
 	if is_instance_valid(preset):
 		preset.position = Vector2.ZERO
+
+# Sample actual directional arm/weapon frames; do not just add a particle ring.
+func BeginSpellPose(releasing: bool):
+	if entity.type != ActorCommons.Type.PLAYER or entity.stat.IsMorph() or Travel.IsFlying(entity) or not animation or not animationTree:
+		return
+	StopStrike()
+	spellPose = true
+	spellRelease = releasing
+	spellAge = 0.0
+	animationTree.active = false
+
+func EndSpellPose():
+	if not spellPose:
+		return
+	spellPose = false
+	if is_instance_valid(preset):
+		preset.rotation = 0.0
+		preset.position = Vector2.ZERO
+	if animation:
+		animation.stop()
+	if animationTree:
+		animationTree.active = true
+		previousState = ActorCommons.State.UNKNOWN
+		Refresh()
+
+func _process(delta: float):
+	if not spellPose:
+		return
+	if not ActorCommons.IsAlive(entity) or Travel.IsFlying(entity) or not is_instance_valid(preset):
+		EndSpellPose()
+		return
+	spellAge += delta
+	var direction := entity.entityOrientation
+	var suffix := "Right" if direction.x >= 0 else "Left"
+	if absf(direction.y) >= absf(direction.x):
+		suffix = "Down" if direction.y >= 0 else "Up"
+	var animName := "Attack" + suffix
+	if not animation.has_animation(animName):
+		EndSpellPose()
+		return
+	animation.play(animName)
+	# Raise weapon, hold the charging pose, then follow through on release.
+	var sample := 0.0 if spellAge < 0.12 else 0.15
+	if spellRelease:
+		sample = 0.20 if spellAge < 0.12 else 0.28
+	animation.seek(sample, true)
+	animation.pause()
+	preset.position = -direction * 2.0 if not spellRelease else direction * (4.0 * (1.0 - minf(spellAge / 0.32, 1.0)))
+	if spellRelease and spellAge >= 0.32:
+		EndSpellPose()

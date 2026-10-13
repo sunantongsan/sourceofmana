@@ -213,6 +213,7 @@ func AddExperience(value : int, hasFeedback : bool = true):
 	if level >= Cultivation.MAX_LEVEL:
 		experience = 0
 		return
+	var previousLevel := level
 	experience += value
 	# Manage level up
 	var experiencelNeeded = Experience.GetNeededExperienceForNextLevel(level)
@@ -222,6 +223,11 @@ func AddExperience(value : int, hasFeedback : bool = true):
 		experiencelNeeded = Experience.GetNeededExperienceForNextLevel(level)
 	if level >= Cultivation.MAX_LEVEL:
 		experience = 0
+	if level > previousLevel:
+		RefreshAttributes()
+		health = current.maxHealth
+		mana = current.maxMana
+		stamina = current.maxStamina
 	vital_stats_updated.emit()
 	if actor is PlayerAgent:
 		Network.TargetAlteration(actor.get_rid().get_id(), actor.get_rid().get_id(), value, ActorCommons.Alteration.EXP, DB.UnknownHash, hasFeedback, actor.peerID)

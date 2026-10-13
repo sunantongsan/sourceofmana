@@ -33,6 +33,7 @@ static func CreateAgent(spawn : SpawnObject, data : EntityData, nick : String = 
 			actor.spawnInfo = spawn
 		ActorCommons.Type.MONSTER:
 			actor = MonsterAgent.new(ActorCommons.Type.MONSTER, data, nick, true)
+			Hunting.ApplyMonster(actor, spawn.map.id)
 			var mobDir : int = spawn.direction if spawn.direction != ActorCommons.Direction.UNKNOWN else data._direction
 			actor.currentOrientation = ActorCommons.GetDirectionFromEnum(mobDir as ActorCommons.Direction)
 			if spawn.state != ActorCommons.State.UNKNOWN:
@@ -65,8 +66,22 @@ static func LoadMapLayers(mapID : int) -> Node2D:
 	var layers : PackedScene = ResourceLoader.load(mapData.layersPath) as PackedScene
 	if not layers:
 		return null
-	return layers.instantiate()
+	var node := layers.instantiate()
+	RemoveMovingWeather(node)
+	return node
 
 static func LoadMapNavigation(mapID : int) -> NavigationPolygon:
 	var mapData : MapData = DB.MapsDB.get(mapID, null)
 	return mapData.navigation if mapData else null
+
+static func RemoveMovingWeather(node: Node):
+	if node is CanvasItem and node.material is ShaderMaterial:
+		var shader: Shader = node.material.shader
+		if shader and "AmbiantOverlay" in shader.resource_path:
+			node.hide()
+			node.process_mode = Node.PROCESS_MODE_DISABLED
+	if node is AmbientPolygon2D:
+		node.hide()
+		node.process_mode = Node.PROCESS_MODE_DISABLED
+	for child in node.get_children():
+		RemoveMovingWeather(child)

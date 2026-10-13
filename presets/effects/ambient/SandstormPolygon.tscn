@@ -48,6 +48,7 @@ gradient = SubResource("Gradient_82u1l")
 fill_from = Vector2(1, 1)
 
 [node name="SandstormPolygon" type="Polygon2D" unique_id=280912446]
+visible = false
 z_index = 255
 texture_repeat = 2
 material = SubResource("ShaderMaterial_vqhhq")

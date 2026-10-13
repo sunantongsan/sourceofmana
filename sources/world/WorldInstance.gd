@@ -30,7 +30,13 @@ func CheckNavReady():
 func _map_loaded():
 	for spawn in map.spawns:
 		if spawn:
-			for i in spawn.count:
+			var amount := spawn.count
+			if spawn.type == ActorCommons.Type.MONSTER:
+				spawn.respawn_delay = 8.0
+				spawn.is_persistant = true
+				if spawn.id != "Splatyna".hash():
+					amount = mini(32, ceili(spawn.count * 1.5))
+			for i in amount:
 				WorldAgent.CreateAgent(spawn, id, spawn.nick)
 	RefreshProcessMode()
 

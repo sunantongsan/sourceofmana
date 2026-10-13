@@ -34,6 +34,7 @@ seamless = true
 normalize = false
 
 [node name="Ambient" type="TextureRect" unique_id=1205741901]
+visible = false
 z_index = 255
 material = SubResource("ShaderMaterial_82u1l")
 offset_right = 1024.0

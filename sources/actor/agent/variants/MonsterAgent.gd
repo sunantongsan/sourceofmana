@@ -25,7 +25,7 @@ func Killed():
 
 	var inst : WorldInstance = WorldAgent.GetInstanceFromAgent(self)
 	if inst and inst.timers:
-		Callback.SelfDestructTimer(inst.timers, ActorCommons.DeathDelay, WorldAgent.RemoveAgent, [self])
+		Callback.SelfDestructTimer(inst.timers, 0.7, WorldAgent.RemoveAgent, [self])
 
 func _ready():
 	inventory = ActorInventory.new(self)

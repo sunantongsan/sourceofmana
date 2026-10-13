@@ -62,6 +62,11 @@ func Update(nextVelocity : Vector2, gardbandPosition : Vector2, nextOrientation 
 
 		match nextState:
 			ActorCommons.State.DEATH:
+				visual.EndSpellPose()
+				interactive.StopCasting()
+				if type == ActorCommons.Type.MONSTER:
+					interactive.hide()
+					create_tween().tween_property(visual, "modulate:a", 0.0, 0.35).set_delay(0.2)
 				entity_died.emit()
 			ActorCommons.State.IDLE:
 				if Launcher.Player == self:
