@@ -156,7 +156,7 @@ func run():
 	assert(agent.stat.gp == 0)
 	agent.stat.gp = saved_gold
 	assert(not SupplyShop.Buy(agent, -1) and not SupplyShop.Buy(agent, 99999))
-	assert(is_equal_approx(Launcher.Player.visual.sprites[ActorCommons.Slot.WEAPON].scale.x, 1.45))
+	assert(is_equal_approx(Launcher.Player.visual.heldWeapon.blade.scale.x, HeldWeapon.LENGTH_SCALE))
 	var slots : int = agent.inventory.itemCount
 	agent.inventory.itemCount = ActorCommons.InventorySize
 	assert(not SupplyShop.Buy(agent, 401))

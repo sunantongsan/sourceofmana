@@ -28,6 +28,7 @@ var equipmentEffects : Array[Node2D]		= []
 var skillCastID : int						= DB.UnknownHash
 var attackAnimLength : float				= 1.0
 var strikeTween : Tween = null
+var heldWeapon : HeldWeapon
 var spellPose := false
 var spellRelease := false
 var spellAge := 0.0
@@ -53,6 +54,7 @@ func ResetData():
 	StopStrike()
 	if preset:
 		preset.queue_free()
+	heldWeapon = null
 	for effect in equipmentEffects:
 		if effect:
 			effect.queue_free()
@@ -232,9 +234,14 @@ func SetEquipment(slot : int, data : EntityData = null, applyOverrides : bool = 
 		sprite.vframes = defaultVframes[slot]
 
 	if slot == ActorCommons.Slot.WEAPON:
-		# Enlarge around the hand-height pivot rather than the feet.
-		sprite.scale = Vector2(1.45, 1.45)
-		sprite.position = Vector2(0, 8.1)
+		sprite.scale = Vector2.ONE
+		sprite.position = Vector2.ZERO
+		if not is_instance_valid(heldWeapon):
+			heldWeapon = HeldWeapon.new()
+			heldWeapon.visual = self
+			heldWeapon.source = sprite
+			preset.add_child(heldWeapon)
+		heldWeapon.Equip(cell)
 	SetEquipmentMetadata(slot, cell)
 	LoadSpriteSlot(slot, sprite)
 	if applyOverrides:

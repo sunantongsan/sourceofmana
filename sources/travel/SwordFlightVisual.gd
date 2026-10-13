@@ -12,7 +12,7 @@ func _ready():
 	basePosition = entity.visual.position
 	baseZ = entity.z_index
 	z_index = -1
-	scale = Vector2(1.5, 1.5)
+	scale = Vector2.ONE
 
 func _process(delta : float):
 	var flying : bool = Travel.IsFlying(entity)

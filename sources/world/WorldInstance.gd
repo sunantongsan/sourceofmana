@@ -34,8 +34,7 @@ func _map_loaded():
 			if spawn.type == ActorCommons.Type.MONSTER:
 				spawn.respawn_delay = 8.0
 				spawn.is_persistant = true
-				if spawn.id != "Splatyna".hash():
-					amount = mini(32, ceili(spawn.count * 1.5))
+				amount = spawn.count
 			for i in amount:
 				WorldAgent.CreateAgent(spawn, id, spawn.nick)
 	RefreshProcessMode()

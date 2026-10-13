@@ -31,6 +31,7 @@ static func Create(mapID : int) -> WorldMap:
 		map.name = mapData._name
 		map.LoadMapData()
 		WorldNavigation.LoadData(map)
+		Hunting.ConfigureSpawns(map)
 		map.CreateInstance(0)
 
 	return map

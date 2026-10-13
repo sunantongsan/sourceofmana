@@ -29,8 +29,12 @@ static func Cast(agent : BaseAgent, target : BaseAgent, skill : SkillCell):
 		CastAbility(agent, skill)
 		return
 
+	var commitMelee : bool = agent is PlayerAgent and skill.name == "Melee"
+	if commitMelee and not SkillCommons.IsAttackable(agent, target, skill):
+		return
 	if SkillCommons.TryConsume(agent, CellCommons.Modifier.Mana, skill):
 		Stopped(agent)
+		agent.meleeCommittedTargetRID = target.get_rid().get_id() if commitMelee else 0
 		agent.SetSkillCastID(skill.id)
 		Callback.StartTimer(agent.actionTimer, skill.castTime + agent.stat.current.castAttackDelay, Skill.Process.bind(agent, target, skill), true)
 		if skill.mode == TargetMode.SINGLE:
@@ -45,7 +49,7 @@ static func Process(agent : BaseAgent, target : BaseAgent, skill : SkillCell):
 				if not ActorCommons.IsAlive(target):
 					Stopped(agent)
 					return
-				if SkillCommons.IsAttackable(agent, target, skill):
+				if SkillCommons.IsAttackable(agent, target, skill) or CanFollowThrough(agent, target, skill):
 					var handle : Callable = Skill.Handle.bind(agent, target, skill, SkillCommons.GetRNG(hasStamina))
 					if SkillCommons.IsDelayed(skill):
 						Callback.SelfDestructTimer(agent, agent.stat.current.castAttackDelay, handle)
@@ -91,6 +95,7 @@ static func Handle(agent : BaseAgent, target : BaseAgent, skill : SkillCell, rng
 
 # Handling
 static func Casted(agent : BaseAgent, target : BaseAgent, skill : SkillCell):
+	agent.meleeCommittedTargetRID = 0
 	agent.cooldownTimers[skill.id] = true
 	agent.SetSkillCastID(DB.UnknownHash)
 	var timeLeft : float = SkillCommons.GetCooldown(agent, skill)
@@ -122,6 +127,7 @@ static func Healed(agent : BaseAgent, target : BaseAgent, skill : SkillCell, rng
 	Network.NotifyNeighbours(agent, "TargetAlteration", [agent.get_rid().get_id(), target.get_rid().get_id(), heal, ActorCommons.Alteration.HEAL, skill.id, true], true, true)
 
 static func Stopped(agent : BaseAgent):
+	agent.meleeCommittedTargetRID = 0
 	if SkillCommons.HasAnyActionInProgress(agent):
 		agent.SetSkillCastID(DB.UnknownHash)
 		Callback.ClearTimer(agent.actionTimer)
@@ -144,3 +150,12 @@ static func CastAbility(target : BaseAgent, skill : SkillCell):
 	var ability : CellScript = skill.cellScript.new()
 	if ability:
 		ability.Execute(target, skill)
+
+static func CanFollowThrough(agent : BaseAgent, target : BaseAgent, skill : SkillCell) -> bool:
+	if not agent is PlayerAgent or skill.name != "Melee" or not is_instance_valid(target):
+		return false
+	if agent.meleeCommittedTargetRID != target.get_rid().get_id() or not SkillCommons.IsInteractable(agent, target):
+		return false
+	# Only a strike begun within reach can follow a moving target; no hits through walls.
+	var grace := mini(48, ceili(target.stat.current.walkSpeed * (skill.castTime + agent.stat.current.castAttackDelay)) + 8)
+	return SkillCommons.IsNear(agent, target, ActorCommons.GetSkillRange(agent, skill) + grace)

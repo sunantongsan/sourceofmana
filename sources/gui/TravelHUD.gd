@@ -5,6 +5,7 @@ var flightButton : Button
 var location : Label
 var requestSerial : int = 0
 var shownMap : int = DB.UnknownHash
+var destinationButtons : Array[Button] = []
 var markerRoot : Node2D
 
 func _ready():
@@ -46,6 +47,11 @@ func _ready():
 	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.add_child(hint)
+	var search := LineEdit.new()
+	search.placeholder_text = "ค้นหาแผนที่ / เลเวล • ครบ 40 แผนที่"
+	search.custom_minimum_size.y = 42
+	search.text_changed.connect(FilterDestinations)
+	column.add_child(search)
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(scroll)
@@ -57,6 +63,8 @@ func _ready():
 		button.text = "%d. %s" % [idx + 1, Travel.POINTS[idx].title]
 		button.custom_minimum_size.y = 48
 		button.pressed.connect(Warp.bind(idx))
+		button.set_meta("map", Travel.POINTS[idx].map)
+		destinationButtons.append(button)
 		destinations.add_child(button)
 	var close := Button.new()
 	close.text = "กลับเข้าเกม"
@@ -141,3 +149,8 @@ func SendTravel(target : int, action : int):
 	await get_tree().create_timer(float(NetworkCommons.DelayShort) / 1000.0 + 0.05).timeout
 	if serial == requestSerial and FSM.IsGameState() and is_instance_valid(player) and Launcher.Player == player:
 		Network.TriggerSkill(target, action)
+
+func FilterDestinations(query : String):
+	var term := query.strip_edges().to_lower()
+	for button in destinationButtons:
+		button.visible = term.is_empty() or term in button.text.to_lower() or term in String(button.get_meta("map")).to_lower()

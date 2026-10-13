@@ -16,6 +16,8 @@ var flightGoal : Vector2
 var agent : NavigationAgent2D			= null
 
 var actionTimer : Timer					= null
+var meleeCommittedTargetRID : int = 0
+
 var cooldownTimers : Dictionary[int, bool]	= {}
 
 var hasCurrentGoal : bool				= false

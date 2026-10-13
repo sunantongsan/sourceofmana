@@ -24,7 +24,7 @@ static func Roadmap() -> String:
 	return result
 
 static func IsCity(mapID : int) -> bool:
-	for mapName in ["Tulimshar", "Tulimshar Center", "Tulimshar Bay", "Tulimshar Castle", "Tulimshar Castle Corridors", "Tulimshar West Chamber", "Tulimshar West Wall Pathway"]:
+	for mapName in ["Tulimshar", "Tulimshar Center", "Tulimshar Bay", "Tulimshar Castle", "Tulimshar Castle Corridors", "Tulimshar West Chamber", "Tulimshar West Wall Pathway", "Artis", "Manayir", "Ship First Deck", "Ship Second Deck", "Ship Nard's Room", "Ocean", "Overworld", "Splatyna Cave Entrance"]:
 		if mapID == mapName.hash():
 			return true
 	return false
