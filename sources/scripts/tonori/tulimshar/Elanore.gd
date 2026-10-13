@@ -3,9 +3,11 @@ extends NpcScript
 func OnStart():
 	var state : int = GetQuest(ProgressCommons.Quest.TUTORIAL)
 	if state < ProgressCommons.TUTORIAL.INTRO_ITEMS_GIVEN:
+		SetQuest(ProgressCommons.Quest.TUTORIAL, ProgressCommons.TUTORIAL.INTRO_ITEMS_GIVEN)
 		AddItem(DB.GetCellHash("Water Bottle"))
 		AddItem(DB.GetCellHash("Cactus Sour Candy"))
 	if state < ProgressCommons.TUTORIAL.CLOTHES_GIVEN:
+		SetQuest(ProgressCommons.Quest.TUTORIAL, ProgressCommons.TUTORIAL.CLOTHES_GIVEN)
 		AddItem(DB.GetCellHash("Cotton Shirt"), 1, "Used")
 		AddItem(DB.GetCellHash("Shorts"), 1, "Used")
 	if state < ProgressCommons.TUTORIAL.ELANORE_DONE:

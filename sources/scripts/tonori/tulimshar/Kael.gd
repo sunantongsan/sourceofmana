@@ -18,13 +18,13 @@ func OnStart():
 		Choice("ไปฝึกต่อ", Farewell)
 
 func OnFieldCleanUp():
+	SetQuest(ProgressCommons.Quest.TUTORIAL, ProgressCommons.TUTORIAL.KAEL_MET)
 	AddItem(DB.GetCellHash("Short Sword"))
 	Mes("ขั้นที่ 2: ได้รับดาบสั้นแล้ว เปิดกระเป๋า เลือกดาบ แล้วกดสวมใส่")
 	OnFightTutorial()
 	LookAtPosition(FIELD_POSITION)
 	Mes("ขั้นที่ 3: กำจัดกระบองเพชรเดินได้ 5 ตัว และหนอนทราย 5 ตัวบริเวณนี้ แล้วกลับมารับค่าประสบการณ์ 20 หน่วย")
 	ResetCamera()
-	SetQuest(ProgressCommons.Quest.TUTORIAL, ProgressCommons.TUTORIAL.KAEL_MET)
 	npc.ownScript.TrackPlayer(own)
 
 func OnCheckProgress():
