@@ -1,6 +1,6 @@
 extends NpcScript
 
-const FIELD_POSITION : Vector2 = Vector2(2912, 1312)
+const FIELD_POSITION : Vector2 = Vector2(1524, 3000)
 
 func OnStart():
 	var state : int = GetQuest(ProgressCommons.Quest.TUTORIAL)
@@ -19,11 +19,12 @@ func OnStart():
 
 func OnFieldCleanUp():
 	SetQuest(ProgressCommons.Quest.TUTORIAL, ProgressCommons.TUTORIAL.KAEL_MET)
-	AddItem(DB.GetCellHash("Short Sword"))
-	Mes("ขั้นที่ 2: ได้รับดาบสั้นแล้ว เปิดกระเป๋า เลือกดาบ แล้วกดสวมใส่")
+	if not HasItem(DB.GetCellHash("Short Sword")):
+		AddItem(DB.GetCellHash("Short Sword"))
+	Mes("ขั้นที่ 2: ตัวละครมีดาบเริ่มต้นแล้ว เปิดกระเป๋า เลือกดาบ แล้วกดสวมใส่")
 	OnFightTutorial()
 	LookAtPosition(FIELD_POSITION)
-	Mes("ขั้นที่ 3: กำจัดกระบองเพชรเดินได้ 5 ตัว และหนอนทราย 5 ตัวบริเวณนี้ แล้วกลับมารับค่าประสบการณ์ 20 หน่วย")
+	Mes("ขั้นที่ 3: ออกประตูเมืองด้านใต้ กำจัดกระบองเพชรเดินได้ 5 ตัว และหนอนทราย 5 ตัวในลานฝึกนอกเมือง แล้วกลับมารับค่าประสบการณ์ 20 หน่วย")
 	ResetCamera()
 	npc.ownScript.TrackPlayer(own)
 
@@ -47,7 +48,7 @@ func OnCheckProgress():
 
 func OnFightTutorial():
 	DisplayActions(["gp_interact", "gp_target", "gp_sit"])
-	Narrate("มือถือ: A โจมตีศัตรูใกล้ตัว • R เปลี่ยนเป้าหมาย • L เก็บของ\nทุกการโจมตีใช้ความอึด หากหมดให้ถอยแล้วกด Y นั่งพัก")
+	Narrate("มือถือ: ปุ่มดาบใหญ่โจมตี • ปุ่มสกิล 3 ปุ่มรอบดาบ • ปุ่มเป้าหมายเปลี่ยนศัตรู\nทุกการโจมตีใช้ความอึด หากหมดให้ถอยแล้วกดพัก")
 	Narrate("กำจัดศัตรูเพื่อรับค่าประสบการณ์ เมื่อระดับเพิ่ม เปิดค่าสถานะ → กด + → ดูค่าพลังที่เปลี่ยน → กดบันทึก")
 
 func Farewell():

@@ -327,6 +327,11 @@ func TriggerExplore(peerID : int):
 
 func TriggerSkill(targetRID : int, skillID : int, peerID : int):
 	var player : PlayerAgent = Peers.GetAgent(peerID)
+	if player and skillID == DB.UnknownHash:
+		Skill.Stopped(player)
+		player.SetRelativeMode(false, Vector2.ZERO)
+		player.WalkToward(player.position)
+		return
 	if player and DB.SkillsDB.has(skillID):
 		var target : BaseAgent = WorldAgent.GetAgent(targetRID)
 		Skill.Cast(player, target, DB.SkillsDB[skillID])

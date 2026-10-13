@@ -57,6 +57,7 @@ static func GetExploreFromData(charData : Dictionary) -> Destination:
 func SetCharacterInfo(charData : Dictionary, charID : int):
 	# Stats
 	stat.SetStats(charData)
+	stat.level = clampi(stat.level, 1, Cultivation.MAX_LEVEL)
 	stat.ResetAttributesIfOverBudget()
 	# Inventory
 	var inventoryData : Array[Dictionary] = Launcher.SQL.GetStorage(charID, 0)
@@ -70,6 +71,7 @@ func SetCharacterInfo(charData : Dictionary, charID : int):
 	exploreOrigin = GetExploreFromData(charData)
 	# Progress
 	progress.ImportProgress(charID)
+	GiveCultivationStarter(charID)
 
 #
 func UpdateLastStats():
@@ -284,3 +286,23 @@ func ClearScript():
 	if ownScript:
 		ownScript.OnQuit()
 		ownScript = null
+
+# One-time migration also covers characters created in earlier test builds.
+func GiveCultivationStarter(charID : int):
+	var grantID : int = "XianWayStarterV1".hash()
+	if progress.GetQuest(grantID) == ProgressCommons.CompletedProgress:
+		return
+	var sword : ItemCell = DB.GetItem(DB.GetCellHash("Short Sword"))
+	if sword and not inventory.GetItem(sword):
+		if not inventory.HasSpace(1):
+			return
+		inventory.AddItem(sword, 1)
+	if sword and inventory.GetItem(sword) and not inventory.GetEquipmentCell(sword.slot):
+		inventory.EquipItem(sword, inventory.FindItemIndex(sword))
+	for skillName in ["Mana Burst", "Leaf Blades", "Sonic Scream"]:
+		var skill : SkillCell = DB.GetSkill(DB.GetCellHash(skillName))
+		if skill and not progress.HasSkill(skill):
+			progress.AddSkill(skill, 1)
+			Launcher.SQL.SetSkill(charID, skill.id, 1)
+	# Persist inventory/equipment before the grant marker.
+	progress.SetQuest(grantID, ProgressCommons.CompletedProgress)

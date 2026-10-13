@@ -122,27 +122,8 @@ func OpenDiscord():
 	OS.shell_open(LauncherCommons.DiscordInviteLink)
 
 func DisplayFirstLogin():
-	if LauncherCommons.isWeb:
-		UICommons.MessageBox("""Welcome to Source of Mana!
-
-You're currently playing the web version, which may run slower and isn't as stable as the downloadable versions.
-
-This version is mainly here to showcase the game.
-For the best experience, we recommend using the native client found on our itch.io page (Available on Windows, Linux, macOS, and Android).
-""",
-			settingsWindow.set_sessionfirstlogin.bind(false), "OK",
-			OpenDiscord, "Join our Discord")
-	else:
-		UICommons.MessageBox("""Welcome to Source of Mana!
-
-This is an open-source MMORPG and still a work in progress. You're welcome to explore, test, and enjoy the current features.
-
-We're also always looking for contributors!
-If you'd like to get involved in development, design, writing, or testing, feel free to join our community.
-Otherwise, have fun and thank you for playing!
-""",
-			settingsWindow.set_sessionfirstlogin.bind(false), "OK",
-			OpenDiscord, "Join our Discord")
+	UICommons.MessageBox("วิถีเซียน\n\nเริ่มต้นพร้อมดาบและวิชา 3 สกิล\nฝึกนอกประตูใต้ สะสมประสบการณ์และจัดแต้มเพื่อพัฒนาตัวละคร\nกดปุ่มฝึกตนเพื่อดูเป้าหมายได้ทุกเมื่อ",
+		settingsWindow.set_sessionfirstlogin.bind(false), "เริ่มฝึก")
 
 func DisplayDeath():
 	UICommons.MessageBox(DeathMessages.Pick(), Network.TriggerRespawn, "Respawn")
@@ -351,6 +332,7 @@ func GetUITarget(target : UICommons.UITarget) -> Control:
 #
 func _ready():
 	TranslationServer.set_locale("th")
+	add_child(preload("res://sources/gui/CombatHUD.gd").new())
 	add_child(preload("res://sources/gui/TrainingGuide.gd").new())
 	get_tree().set_auto_accept_quit(false)
 	get_tree().set_quit_on_go_back(false)

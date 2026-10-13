@@ -127,6 +127,10 @@ func TargetAlteration(agentRID : int, targetRID : int, value : int, alteration :
 					Launcher.GUI.chatContainer.AddLocalFeedback("You receive " + str(value) + " GP")
 
 func Casted(agentRID : int, skillID : int, cooldown : float, _peerID : int):
+	if Launcher.Player and agentRID == Launcher.Player.agentRID:
+		var hud = Launcher.GUI.get_node_or_null("CombatHUD")
+		if hud:
+			hud.OnCasted(skillID, cooldown)
 	var entity : Entity = Entities.Get(agentRID)
 	if entity and entity.get_parent() and entity.interactive:
 		entity.interactive.DisplaySkill.call_deferred(entity, skillID, cooldown)
@@ -377,7 +381,7 @@ func UpdateQuest(questID : int, state : int, _peerID : int, notify : bool = true
 		Entities.RefreshQuestHighlights(questID)
 		if Launcher.GUI and Launcher.GUI.progressWindow:
 			Launcher.GUI.progressWindow.RefreshQuest(questID, state)
-		if notify:
+		if notify and DB.QuestsDB.has(questID):
 			Launcher.Player.sfx.HandleAlteration(ActorCommons.Alteration.QUEST_COMPLETE if state == ProgressCommons.CompletedProgress else ActorCommons.Alteration.QUEST_UPDATE)
 
 func RefreshProgress(skills : Dictionary, quests : Dictionary, bestiary : Dictionary, peerID : int):

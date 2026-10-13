@@ -20,7 +20,7 @@ static func Cast(agent : BaseAgent, target : BaseAgent, skill : SkillCell):
 	if skill.mode == TargetMode.SINGLE and (not target or not ActorCommons.IsAlive(target)):
 		return
 	var map : WorldMap = WorldAgent.GetMapFromAgent(agent)
-	if map and map.HasFlags(WorldMap.Flags.NO_SPELL):
+	if map and (map.HasFlags(WorldMap.Flags.NO_SPELL) or (agent is PlayerAgent and Cultivation.IsCity(map.id) and (skill.modifiers.Get(CellCommons.Modifier.Attack) > 0 or skill.modifiers.Get(CellCommons.Modifier.MAttack) > 0))):
 		return
 
 	if SkillCommons.IsInstantAbility(skill):
@@ -97,7 +97,7 @@ static func Casted(agent : BaseAgent, target : BaseAgent, skill : SkillCell):
 
 static func CooledDown(agent : BaseAgent, target : BaseAgent, skill : SkillCell):
 	agent.cooldownTimers[skill.id] = false
-	if skill.repeat and ActorCommons.IsAlive(target) and not SkillCommons.HasAnyActionInProgress(agent):
+	if skill.repeat and agent is not PlayerAgent and ActorCommons.IsAlive(target) and not SkillCommons.HasAnyActionInProgress(agent):
 		Skill.Cast(agent, target, skill)
 
 static func Damaged(agent : BaseAgent, target : BaseAgent, skill : SkillCell, rng : float):

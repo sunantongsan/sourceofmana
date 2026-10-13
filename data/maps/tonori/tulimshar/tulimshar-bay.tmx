@@ -1046,24 +1046,9 @@
    </properties>
    <polygon points="20,56 52,56 52,88 20,88"/>
   </object>
-  <object id="30" name="Maggot" type="Spawn" x="4138" y="3635" width="274" height="227">
-   <properties>
-    <property name="count" value="2"/>
-    <property name="type" value="Monster"/>
-   </properties>
-  </object>
-  <object id="31" name="Giant Maggot" type="Spawn" x="5200" y="3108" width="358" height="294">
-   <properties>
-    <property name="count" value="1"/>
-    <property name="type" value="Monster"/>
-   </properties>
-  </object>
-  <object id="33" name="Maggot" type="Spawn" x="4354" y="2757" width="147" height="280">
-   <properties>
-    <property name="count" value="2"/>
-    <property name="type" value="Monster"/>
-   </properties>
-  </object>
+
+
+
   <object id="34" name="Flour Barrel" type="Spawn" x="1268" y="1587">
    <properties>
     <property name="player_script" value="tonori/tulimshar/FlourBarrel.gd"/>
@@ -1100,47 +1085,12 @@
     <property name="type" value="Npc"/>
    </properties>
   </object>
-  <object id="42" name="Peyote" type="Spawn" x="4359" y="2787" width="116" height="218">
-   <properties>
-    <property name="count" value="2"/>
-    <property name="type" value="Monster"/>
-   </properties>
-  </object>
-  <object id="43" name="Peyote" type="Spawn" x="4148" y="3691" width="256" height="150">
-   <properties>
-    <property name="count" value="3"/>
-    <property name="type" value="Monster"/>
-   </properties>
-  </object>
-  <object id="44" name="Sea Slime" type="Spawn" x="3068" y="983" width="414" height="110">
-   <properties>
-    <property name="count" value="3"/>
-    <property name="type" value="Monster"/>
-   </properties>
-  </object>
-  <object id="45" name="Sea Slime" type="Spawn" x="3781" y="1117" width="344" height="400">
-   <properties>
-    <property name="count" value="3"/>
-    <property name="type" value="Monster"/>
-   </properties>
-  </object>
-  <object id="46" name="Sea Slime" type="Spawn" x="2231" y="2941" width="778" height="284">
-   <properties>
-    <property name="count" value="2"/>
-    <property name="type" value="Monster"/>
-   </properties>
-  </object>
-  <object id="47" name="Piou" type="Spawn" x="-59.9697" y="27.6667">
-   <properties>
-    <property name="count" value="5"/>
-    <property name="type" value="Monster"/>
-   </properties>
-  </object>
-  <object id="48" name="Croc" type="Spawn" x="2748.5" y="1022" width="1031" height="68">
-   <properties>
-    <property name="count" value="3"/>
-    <property name="type" value="Monster"/>
-   </properties>
-  </object>
+
+
+
+
+
+
+
  </objectgroup>
 </map>

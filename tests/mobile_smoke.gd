@@ -41,7 +41,7 @@ func run():
 	print("MOBILE_SMOKE_PASS")
 	var login = Launcher.GUI.loginPanel
 	login.EnableAccountCreator(true)
-	login.nameTextControl.text = "Smoke" + str(Time.get_ticks_msec())
+	login.nameTextControl.text = "Smoke" + str(randi() % 1000000000)
 	login.passwordTextControl.text = "offline-test-only"
 	login.confirmPasswordTextControl.text = "offline-test-only"
 	login.emailTextControl.text = "test@example.invalid"
@@ -50,7 +50,7 @@ func run():
 	assert(FSM.currentState == FSM.States.CHAR_SCREEN, "Offline account should reach character screen")
 	var character = Launcher.GUI.characterPanel
 	character.EnableCharacterCreator(true)
-	character.characterNameLineEdit.text = "Tester" + str(Time.get_ticks_msec())
+	character.characterNameLineEdit.text = "Tester" + str(randi() % 1000000000)
 	character.CreateCharacter()
 	await get_tree().create_timer(3.0).timeout
 	character.SelectCharacter()

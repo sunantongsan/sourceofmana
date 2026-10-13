@@ -878,11 +878,6 @@
     <property name="type" value="Npc"/>
    </properties>
   </object>
-  <object id="31" name="Ratto" type="Spawn" x="-38.8227" y="18.9942">
-   <properties>
-    <property name="count" value="5"/>
-    <property name="type" value="Monster"/>
-   </properties>
-  </object>
+
  </objectgroup>
 </map>

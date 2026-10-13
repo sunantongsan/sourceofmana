@@ -41,7 +41,7 @@ func _ready():
 	details.bbcode_enabled = true
 	details.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	details.add_theme_font_size_override("normal_font_size", 18)
-	details.text = "[b]ฝึกตนให้แข็งแกร่งขึ้น[/b]\n1. เปิดกระเป๋า เลือกดาบหรือชุด แล้วกดสวมใส่ ดูค่าพลังที่เปลี่ยนก่อนตัดสินใจ\n2. ล่าศัตรูที่สู้ไหวเพื่อรับค่าประสบการณ์ เก็บของด้วย L บนมือถือ\n3. เมื่อระดับเพิ่ม เปิดค่าสถานะ ดูแต้มที่เหลือ กด + แล้วกดบันทึก\n4. เลือกอุปกรณ์ที่เหมาะกับตนเอง พกอาหารและยาก่อนออกสำรวจ\n\n[b]เลือกแต้มอย่างไร[/b]\nกำลัง: เพิ่มโจมตีกายภาพและน้ำหนักที่แบกได้\nพละกำลัง: เพิ่มชีวิตและป้องกัน\nความคล่องตัว: เพิ่มความแม่นยำและการหลบ\nความทนทาน: เพิ่มความอึดและการฟื้นความอึด\nสมาธิ: เพิ่มพลังปราณและพลังเวท\nลองกด + เพื่อดูค่าพลังก่อนบันทึก ปุ่มคืนค่ายกเลิกเฉพาะแต้มที่ยังไม่บันทึก\n\n[b]ปุ่มมือถือ[/b]\nลากแป้นซ้ายเพื่อเดิน • A โจมตี/โต้ตอบ • R เปลี่ยนเป้าหมาย\nL เก็บของ • X วิ่ง • Y นั่งพัก • B ยกเลิก\nฝึกในที่ปลอดภัยก่อน อย่าวิ่งจนความอึดหมดแล้วเข้าต่อสู้"
+	details.text = "[b]เริ่มวิถีเซียน[/b]\nตัวละครได้รับและสวมดาบเริ่มต้นแล้ว พร้อมสกิล 3 วิชา\nเมืองเป็นเขตปลอดภัย ออกประตูด้านใต้ไปลานฝึกนอกเมืองเพื่อหาหนอนและกระบองเพชร\n\n[b]ต่อสู้บนมือถือ[/b]\nปุ่มดาบใหญ่: โจมตีปกติ • ปุ่มรอบดาบ: สกิลพร้อมคูลดาวน์\nออโตตีปกติ: เลือกศัตรูใกล้ตัว เดินเข้าระยะ และตีต่อเนื่อง\nออโตใช้สกิล: ใช้เฉพาะสกิลที่พร้อม หากปราณ/ความอึดไม่พอจะรอ\nขยับแป้นเดินเพื่อควบคุมเอง ออโตจะพักระหว่างเดิน\nปุ่มโต้ตอบใช้คุยกับผู้ฝึกสอน ปุ่มเก็บของเก็บไอเทม ปุ่มพักใช้นั่งฟื้นพลัง\n\n[b]พัฒนาตัวละคร[/b]\nล่าศัตรู → สะสมประสบการณ์ → เลื่อนชั้น → จัดแต้ม → เปลี่ยนอุปกรณ์\nทุก 10 ชั้นจะขึ้นขั้นฝึกตนถัดไป รวม 100 ชั้น\nเปิดค่าสถานะ กด + ดูค่าพลังที่เปลี่ยน แล้วกดบันทึก\nกำลังเพิ่มโจมตี • พละกำลังเพิ่มชีวิตและป้องกัน • ความคล่องตัวเพิ่มแม่นยำและหลบ\nความทนทานเพิ่มความอึด • สมาธิเพิ่มปราณและเวท\n\n[b]สิบขั้นฝึกตน[/b]\n" + Cultivation.Roadmap()
 	column.add_child(details)
 	var actions := HBoxContainer.new()
 	column.add_child(actions)
@@ -93,14 +93,14 @@ func RefreshObjective():
 	if state < ProgressCommons.TUTORIAL.ELANORE_DONE:
 		nextStep = "ขั้นที่ 1: รับชุดจากเอลานอร์ แล้วเปิดกระเป๋าเพื่อสวมใส่"
 	elif state < ProgressCommons.TUTORIAL.KAEL_MET:
-		nextStep = "ขั้นที่ 2: พบคาเอลข้างแปลงกระบองเพชร รับดาบแล้วสวมใส่"
+		nextStep = "ขั้นที่ 2: พบคาเอลข้างแปลงกระบองเพชร เรียนรู้การต่อสู้นอกเมือง"
 	elif state < ProgressCommons.TUTORIAL.KAEL_DONE:
-		nextStep = "ขั้นที่ 3: กระบองเพชร %d/5 • หนอน %d/5 ครบแล้วกลับหาคาเอล" % [mini(player.progress.GetBestiary("Peyote".hash()), 5), mini(player.progress.GetBestiary("Maggot".hash()), 5)]
+		nextStep = "ขั้นที่ 3: นอกประตูใต้: กระบองเพชร %d/5 • หนอน %d/5 ครบแล้วกลับหาคาเอล" % [mini(player.progress.GetBestiary("Peyote".hash()), 5), mini(player.progress.GetBestiary("Maggot".hash()), 5)]
 	elif state < ProgressCommons.TUTORIAL.EKINU_DONE:
 		nextStep = "ขั้นที่ 4: พบเอคินูที่ประตูเมือง รับอุปกรณ์และจัดแต้ม"
 	else:
 		nextStep = "ฝึกต่อ: ล่าศัตรู → เก็บของ → เปลี่ยนอุปกรณ์ → จัดแต้ม"
 	var available : int = Formula.GetMaxAttributePoints(player.stat.level) - Formula.GetAssignedAttributePoints(player.stat)
-	objective.text = "%s\nระดับ %d • ค่าประสบการณ์ %d/%d • แต้มที่ยังใช้ได้ %d" % [nextStep, player.stat.level, player.stat.experience, Experience.GetNeededExperienceForNextLevel(player.stat.level), available]
+	objective.text = "%s\n%s • ค่าประสบการณ์ %d/%d • แต้มที่ยังใช้ได้ %d" % [nextStep, Cultivation.Title(player.stat.level), player.stat.experience, Experience.GetNeededExperienceForNextLevel(player.stat.level), available]
 	guideButton.tooltip_text = nextStep
 	guideButton.text = "ฝึกตน • %d แต้ม" % available if available > 0 else "ฝึกตน • เป้าหมาย"

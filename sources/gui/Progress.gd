@@ -60,6 +60,9 @@ func RefreshBestiary(mobID : int, count : int):
 
 # Quest Log
 func RefreshQuest(questID : int, state : int):
+	# Internal migration markers are persisted with progress, not shown as quests.
+	if not DB.QuestsDB.has(questID):
+		return
 	var questData : QuestData = DB.GetQuest(questID)
 	if not questData:
 		return
