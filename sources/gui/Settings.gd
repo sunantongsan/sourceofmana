@@ -138,7 +138,12 @@ func set_scaling(mode : int):
 	SetVal("Render-Scaling", mode)
 	apply_scaling(mode)
 func apply_scaling(mode : int):
-	Launcher.Root.set_content_scale_factor(mode + 1)
+	var scaleFactor : float = float(mode + 1)
+	if LauncherCommons.isMobile:
+		# Keep at least 800 x 480 logical pixels on phones of different densities.
+		var screenSize : Vector2 = Vector2(DisplayServer.window_get_size())
+		scaleFactor = maxf(1.0, minf(screenSize.x / 800.0, screenSize.y / 480.0))
+	Launcher.Root.set_content_scale_factor(scaleFactor)
 	init_actionoverlay(true)
 
 # ActionOverlay
@@ -423,6 +428,8 @@ func _ready():
 		return
 
 	PopulateCredits()
+	if LauncherCommons.isMobile:
+		Launcher.Root.size_changed.connect(_mobile_resized)
 	RefreshSettings(true)
 	FSM.enter_game.connect(RefreshSettings.bind(true))
 	FSM.exit_game.connect(SaveSettings.bind())
@@ -452,3 +459,6 @@ func SetVal(key : String, value):
 
 func GetVal(key : String):
 	return Conf.GetUserValue(key)
+
+func _mobile_resized():
+	apply_scaling(int(GetVal("Render-Scaling")))

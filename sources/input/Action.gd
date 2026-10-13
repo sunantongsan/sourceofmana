@@ -83,7 +83,7 @@ func GetMove(forceMode : bool = false) -> Vector2:
 		moveVector.x = Input.get_action_strength("gp_move_right") - Input.get_action_strength("gp_move_left")
 		moveVector.y = Input.get_action_strength("gp_move_down") - Input.get_action_strength("gp_move_up")
 		moveVector += Launcher.GUI.sticks.GetMove()
-		moveVector = moveVector.normalized()
+		moveVector = moveVector.limit_length(1.0)
 
 		var moveLength : float = moveVector.length()
 		if moveLength < stickDeadzone:

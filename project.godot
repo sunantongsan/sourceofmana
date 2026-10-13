@@ -10,11 +10,11 @@ config_version=5
 
 [application]
 
-config/name="Source of Mana"
+config/name="XianWay Mana Test"
 config/version="0.0.9"
 run/main_scene="res://presets/Default.tscn"
 config/use_custom_user_dir=true
-config/custom_user_dir_name="SourceOfMana"
+config/custom_user_dir_name="XianWayManaTest"
 config/features=PackedStringArray("4.7")
 run/flush_stdout_on_print=true
 run/max_fps=60
@@ -44,7 +44,8 @@ gdscript/completion/autocomplete_setters_and_getters=true
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
-window/stretch/aspect="ignore"
+window/handheld/orientation=0
+window/stretch/aspect="expand"
 mouse_cursor/tooltip_position_offset=Vector2(16, 16)
 window/size/width=1280
 window/size/height=720
@@ -481,7 +482,8 @@ ui_fullscreen={
 [input_devices]
 
 pointing/android/enable_pan_and_scale_gestures=true
-pointing/emulate_touch_from_mouse=true
+pointing/emulate_touch_from_mouse=false
+pointing/emulate_mouse_from_touch=true
 
 [navigation]
 
@@ -494,6 +496,9 @@ common/max_physics_steps_per_frame=1
 common/physics_interpolation=true
 
 [rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
 
 textures/canvas_textures/default_texture_filter=0
 textures/vram_compression/import_etc2_astc=true
