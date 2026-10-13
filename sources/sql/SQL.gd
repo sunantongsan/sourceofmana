@@ -169,8 +169,9 @@ func UpdateCharacter(player : PlayerAgent) -> bool:
 	data["last_timestamp"] = newTimestamp
 
 	if map != null and not map.HasFlags(WorldMap.Flags.NO_REJOIN) and ActorCommons.IsAlive(player):
-		data["pos_x"] = player.position.x
-		data["pos_y"] = player.position.y
+		var savedPosition : Vector2 = NavigationServer2D.region_get_closest_point(map.regionRID, player.position) if Travel.IsFlying(player) else player.position
+		data["pos_x"] = savedPosition.x
+		data["pos_y"] = savedPosition.y
 		data["pos_map"] = map.id
 	else:
 		data["pos_x"] = player.respawnDestination.pos.x

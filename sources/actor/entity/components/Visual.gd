@@ -355,6 +355,8 @@ func Refresh():
 	var isMoving : bool = currentVelocity.length_squared() > 1
 	var newOrientation : Vector2 = currentVelocity.normalized() if isMoving else entity.entityOrientation
 	var newState : ActorCommons.State = ActorCommons.State.WALK if isMoving else entity.state
+	if Travel.IsFlying(entity):
+		newState = ActorCommons.State.IDLE
 	var differentState : bool = previousState != newState
 	if previousOrientation != newOrientation or differentState:
 		previousState = newState

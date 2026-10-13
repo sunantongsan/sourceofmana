@@ -208,6 +208,7 @@ func DisconnectCharacter(peerID : int):
 			var ip : String = Peers.GetPeerIP(peerID)
 			Util.PrintLog("Server", "Player disconnected: %s (%d) via %s from %s" % [playerName, peerID, Peers.GetTransportName(peer.transport), ip if not ip.is_empty() else "unavailable"])
 
+			Travel.Land(player, true)
 			Launcher.SQL.RefreshCharacter(player)
 			player.stat.buffs.Store(peer.characterID)
 			WorldAgent.RemoveAgent(player)
@@ -315,7 +316,7 @@ func TriggerCloseContext(peerID : int):
 
 func TriggerInteract(targetRID : int, peerID : int):
 	var player : PlayerAgent = Peers.GetAgent(peerID)
-	if player:
+	if player and not Travel.IsFlying(player):
 		var target : BaseAgent = WorldAgent.GetAgent(targetRID)
 		if target:
 			target.Interact(player)
@@ -327,6 +328,12 @@ func TriggerExplore(peerID : int):
 
 func TriggerSkill(targetRID : int, skillID : int, peerID : int):
 	var player : PlayerAgent = Peers.GetAgent(peerID)
+	if skillID == Travel.WARP_ACTION.hash():
+		Travel.Warp(player, targetRID)
+		return
+	if skillID == Travel.FLIGHT_ACTION.hash():
+		Travel.ToggleFlight(player)
+		return
 	if player and skillID == DB.UnknownHash:
 		Skill.Stopped(player)
 		player.SetRelativeMode(false, Vector2.ZERO)

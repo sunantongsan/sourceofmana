@@ -124,7 +124,10 @@ func _physics_process(delta : float):
 	if velocity != Vector2.ZERO:
 		var extraVelocity : Vector2 = velocity - entityVelocity
 		entityPosOffset -= extraVelocity * delta
-		move_and_slide()
+		if Travel.IsFlying(self):
+			position += velocity * delta
+		else:
+			move_and_slide()
 		if Launcher.Player == self:
 			Launcher.Map.PlayerMoved.emit()
 	else:
@@ -134,6 +137,8 @@ func _physics_process(delta : float):
 		set_physics_process(false)
 
 func _ready():
+	if type == ActorCommons.Type.PLAYER:
+		add_child(preload("res://sources/travel/SwordFlightVisual.gd").new())
 	if Launcher.Player == self:
 		if not Launcher.Map.MapUnloaded.is_connected(Entities.ClearTarget):
 			Launcher.Map.MapUnloaded.connect(Entities.ClearTarget)

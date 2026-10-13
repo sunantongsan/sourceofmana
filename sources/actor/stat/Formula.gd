@@ -118,6 +118,8 @@ static func GetBaseWalkSpeed(stat : ActorStats) -> float:
 
 static func GetWalkSpeed(stat : ActorStats) -> float:
 	var walkSpeed : float = GetBaseWalkSpeed(stat)
+	if stat.buffs.GetValue(CellCommons.Modifier.Flight) > 0:
+		return walkSpeed * 2.5
 	if stat.isRunning:
 		walkSpeed += runningSpeedIncrease
 	return walkSpeed

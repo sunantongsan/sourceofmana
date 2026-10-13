@@ -15,6 +15,8 @@ enum TargetMode
 
 # Skill Flow
 static func Cast(agent : BaseAgent, target : BaseAgent, skill : SkillCell):
+	if Travel.IsFlying(agent):
+		return
 	if not ActorCommons.IsAlive(agent) or not SkillCommons.HasSkill(agent, skill) or SkillCommons.IsCoolingDown(agent, skill) or SkillCommons.IsCasting(agent, skill):
 		return
 	if skill.mode == TargetMode.SINGLE and (not target or not ActorCommons.IsAlive(target)):
@@ -101,6 +103,8 @@ static func CooledDown(agent : BaseAgent, target : BaseAgent, skill : SkillCell)
 		Skill.Cast(agent, target, skill)
 
 static func Damaged(agent : BaseAgent, target : BaseAgent, skill : SkillCell, rng : float):
+	if Travel.IsFlying(target) or Travel.IsFlying(agent):
+		return
 	var info : AlterationInfo = SkillCommons.GetDamage(agent, target, skill, rng)
 	if target is AIAgent:
 		target.AddAttacker(agent, clampi(info.value, 0, target.stat.health))

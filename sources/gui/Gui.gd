@@ -85,6 +85,10 @@ func CloseCurrent():
 			ToggleControl(control)
 
 func GoBack():
+	var travel = get_node_or_null("TravelHUD")
+	if travel and travel.panel.visible:
+		travel.Close()
+		return
 	var guide = get_node_or_null("TrainingGuide")
 	if guide and guide.panel.visible:
 		guide.CloseGuide()
@@ -122,7 +126,7 @@ func OpenDiscord():
 	OS.shell_open(LauncherCommons.DiscordInviteLink)
 
 func DisplayFirstLogin():
-	UICommons.MessageBox("วิถีเซียน\n\nเริ่มต้นพร้อมดาบและวิชา 3 สกิล\nฝึกนอกประตูใต้ สะสมประสบการณ์และจัดแต้มเพื่อพัฒนาตัวละคร\nกดปุ่มฝึกตนเพื่อดูเป้าหมายได้ทุกเมื่อ",
+	UICommons.MessageBox("วิถีเซียน\n\nเริ่มต้นพร้อมดาบและวิชา 3 สกิล\nฝึกนอกประตูใต้ สะสมประสบการณ์และจัดแต้มเพื่อพัฒนาตัวละคร\nกดเดินทาง / วาร์ปเพื่อไปจุดสำคัญ หรือขี่กระบี่เพื่อเดินทางเร็วขึ้น\nกดปุ่มฝึกตนเพื่อดูเป้าหมายได้ทุกเมื่อ",
 		settingsWindow.set_sessionfirstlogin.bind(false), "เริ่มฝึก")
 
 func DisplayDeath():
@@ -334,6 +338,7 @@ func _ready():
 	TranslationServer.set_locale("th")
 	add_child(preload("res://sources/gui/CombatHUD.gd").new())
 	add_child(preload("res://sources/gui/TrainingGuide.gd").new())
+	add_child(preload("res://sources/gui/TravelHUD.gd").new())
 	get_tree().set_auto_accept_quit(false)
 	get_tree().set_quit_on_go_back(false)
 	DisplayServer.pip_mode_set_auto_enter_on_background(true)

@@ -73,6 +73,9 @@ func AddCircle(caption : String, pos : Vector2, diameter : float, skillName : St
 	return button
 
 func OverlayOpen() -> bool:
+	var travel = Launcher.GUI.get_node_or_null("TravelHUD")
+	if travel and travel.panel and travel.panel.visible:
+		return true
 	var guide = Launcher.GUI.get_node_or_null("TrainingGuide")
 	if guide and guide.panel and guide.panel.visible:
 		return true
@@ -82,19 +85,19 @@ func OverlayOpen() -> bool:
 	return false
 
 func ReadyForCombat() -> bool:
-	return FSM.IsGameState() and is_instance_valid(Launcher.Player) and ActorCommons.IsAlive(Launcher.Player) and Launcher.Action.IsEnabled() and not Launcher.GUI.IsDialogueContextOpened() and not OverlayOpen()
+	return FSM.IsGameState() and is_instance_valid(Launcher.Player) and ActorCommons.IsAlive(Launcher.Player) and Launcher.Action.IsEnabled() and not Launcher.GUI.IsDialogueContextOpened() and not OverlayOpen() and not Travel.IsFlying(Launcher.Player)
 
-func SetAutoMode(mode : int):
-	StopCombat()
+func SetAutoMode(mode : int, notifyServer : bool = true):
+	StopCombat(notifyServer)
 	autoMode = mode as AutoMode
 	for idx in autoButtons.size():
 		autoButtons[idx].modulate = Color("ffe2a1") if idx == mode else Color("8499ad")
 
-func StopCombat():
+func StopCombat(notifyServer : bool = true):
 	pendingSkill = DB.UnknownHash
 	chasing = false
 	chaseTime = 0
-	if is_instance_valid(Launcher.Player) and FSM.IsGameState():
+	if notifyServer and is_instance_valid(Launcher.Player) and FSM.IsGameState():
 		Network.TriggerSkill(DB.UnknownHash, DB.UnknownHash)
 
 func Attack():
@@ -179,7 +182,7 @@ func TryCombat(skillID : int, automatic : bool):
 
 func _process(delta : float):
 	var inGame : bool = FSM.IsGameState() and is_instance_valid(Launcher.Player)
-	visible = inGame and not OverlayOpen()
+	visible = inGame and not OverlayOpen() and not Travel.IsFlying(Launcher.Player)
 	if not inGame:
 		autoMode = AutoMode.OFF
 		pendingSkill = DB.UnknownHash

@@ -48,6 +48,8 @@ func Warp(agent : BaseAgent, newMap : WorldMap, newPos : Vector2i, direction : A
 	assert(newMap != null and agent != null, "Warp could not proceed, agent or new map missing")
 	if agent and newMap:
 		if agent is PlayerAgent:
+			Travel.Land(agent, true)
+		if agent is PlayerAgent:
 			var currentMap : WorldMap = WorldAgent.GetMapFromAgent(agent)
 			if currentMap and currentMap.HasFlags(WorldMap.Flags.ONLY_SPIRIT) and not newMap.HasFlags(WorldMap.Flags.ONLY_SPIRIT):
 				agent.Morph(false, agent.stat.shape)

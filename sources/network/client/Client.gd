@@ -137,6 +137,11 @@ func Casted(agentRID : int, skillID : int, cooldown : float, _peerID : int):
 
 func EntityBuff(agentRID : int, effect : CellCommons.Modifier, skillID : int, enabled : bool, _peerID : int):
 	var entity : Entity = Entities.Get(agentRID)
+	if entity and effect == CellCommons.Modifier.Flight and entity != Launcher.Player:
+		if enabled:
+			entity.stat.buffs.Apply(effect, 1, -1, skillID, false)
+		else:
+			entity.stat.buffs.Clear(effect)
 	if entity and entity.get_parent() and entity.interactive:
 		entity.interactive.DisplayBuff.call_deferred(effect, skillID, enabled)
 

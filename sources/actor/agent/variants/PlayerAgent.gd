@@ -306,3 +306,5 @@ func GiveCultivationStarter(charID : int):
 			Launcher.SQL.SetSkill(charID, skill.id, 1)
 	# Persist inventory/equipment before the grant marker.
 	progress.SetQuest(grantID, ProgressCommons.CompletedProgress)
+
+var travelReadyAt : int = 0

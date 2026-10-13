@@ -1,6 +1,6 @@
 # Thai mobile training build
 
-Version 0.0.9-cultivation.3 (Android version code 903).
+Version 0.0.9-travel.4 (Android version code 904).
 
 - Thai catalog for core UI, equipment/stat labels and account flows. Sarabun is bundled under OFL.
 - Elanore/Kael/Ekinu teach equipment, combat, recovery and allocating attributes in short Thai instructions. Existing item IDs, graphics and save-directory remain unchanged.
@@ -20,3 +20,11 @@ Validation: Godot 4.7.1 headless import and tests/mobile_smoke.tscn cover offlin
 - Server rejects player damage skills within the city. Player melee repetition now follows deliberate held input or auto mode.
 
 Additional validation: tests/combat_smoke.tscn checks realm boundaries, starter grants, safe-city spawn data, outdoor travel, real server damage, normal/skill auto, stopping auto, and touch controls. These are headless checks, not a physical-device usability test.
+
+## Waypoints and sword travel
+
+- A top-screen Thai travel menu gives eight free, named destinations: Elanore, Kael, Ekinu, south gate, city center, harbor, castle approach and the outdoor training field. Visible cyan circles mark those locations. Destinations are fixed and projected onto server navigation data; invalid indexes and rapid repeat requests are rejected.
+- Sword flight is immediately available for this test build on 13 outdoor maps. It travels at 2.5 times walking speed, crosses ground obstacles, and stays within the navigation area's bounding rectangle. It does not bypass map transitions; entering another map lands the character.
+- Flight uses an idle standing pose above an original drawn sword, retaining the character's existing equipment. Flight blocks damage and attacking. Normal landing requires walkable ground within 64 pixels. Warping/disconnecting lands safely; autosaves store a projected walkable position.
+- The travel controls are enabled in offline mode. Existing upstream online service does not implement these travel commands. Existing RPC signatures are retained.
+- Travel menu suspends auto combat and hides movement controls. Headless tests/travel_smoke.tscn covers all eight real warp requests, invalid destinations, speed/movement across obstacles, bounds, damage rejection, landing, safe saved positions and changing maps while flying.

@@ -57,11 +57,13 @@ enum Modifier {
 	Hide,
 	Invisible,
 	Accuracy,
+	Flight,
 	Count
 }
 
 static func GetModifierDisplayName(effect : Modifier) -> String:
 	match effect:
+		Modifier.Flight: return "ขี่กระบี่"
 		Modifier.Health:		return TranslationServer.translate("Health")
 		Modifier.Mana:			return TranslationServer.translate("Mana")
 		Modifier.Stamina:		return TranslationServer.translate("Stamina")

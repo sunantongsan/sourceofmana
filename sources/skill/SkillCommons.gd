@@ -108,13 +108,13 @@ static func IsSameInstance(agent : BaseAgent, target : BaseAgent) -> bool:
 	return WorldAgent.GetInstanceFromAgent(agent) == WorldAgent.GetInstanceFromAgent(target)
 
 static func IsAttackable(agent : BaseAgent, target : BaseAgent, skill : SkillCell) -> bool:
-	return IsInteractable(agent, target) and IsNear(agent, target, ActorCommons.GetSkillRange(agent, skill))
+	return not Travel.IsFlying(agent) and not Travel.IsFlying(target) and IsInteractable(agent, target) and IsNear(agent, target, ActorCommons.GetSkillRange(agent, skill))
 
 static func IsTargetable(agent : BaseAgent, target : BaseAgent) -> bool:
 	return IsInteractable(agent, target) and IsNear(agent, target, ActorCommons.TargetMaxDistance)
 
 static func IsInteractable(agent : BaseAgent, target : BaseAgent) -> bool:
-	return not ActorCommons.IsSameActor(agent, target) and ActorCommons.IsAlive(target) and IsSameInstance(agent, target)
+	return not Travel.IsFlying(agent) and not Travel.IsFlying(target) and not ActorCommons.IsSameActor(agent, target) and ActorCommons.IsAlive(target) and IsSameInstance(agent, target)
 
 static func IsStaticCasting(agent : BaseAgent) -> bool:
 	return agent.currentSkillID != DB.UnknownHash and not DB.SkillsDB[agent.currentSkillID].castWalk

@@ -9,6 +9,10 @@ signal enemy_killed(monsterID : int)
 signal target_selected(target : BaseAgent)
 
 #
+var flightBounds : Rect2
+var flightSyncTimer : float = 0.0
+var flightGoal : Vector2
+
 var agent : NavigationAgent2D			= null
 
 var actionTimer : Timer					= null
@@ -93,6 +97,10 @@ func SetRelativeMode(enable : bool, givenDirection : Vector2):
 	currentDirection = givenDirection
 
 func WalkToward(pos : Vector2):
+	if self is PlayerAgent and Travel.IsFlying(self):
+		flightGoal = pos.clamp(flightBounds.position, flightBounds.end)
+		hasCurrentGoal = true
+		return
 	if pos == position:
 		return
 
@@ -232,6 +240,27 @@ func _exit_tree():
 		Callback.ClearCallbacks(agent.velocity_computed)
 
 func _physics_process(_delta : float):
+	if self is PlayerAgent and Travel.IsFlying(self):
+		var motion : Vector2 = currentDirection if isRelativeMode else position.direction_to(flightGoal) if hasCurrentGoal else Vector2.ZERO
+		var distance : float = currentWalkSpeed.x * _delta
+		if not isRelativeMode and position.distance_to(flightGoal) <= distance:
+			motion = Vector2.ZERO
+			hasCurrentGoal = false
+		var next : Vector2 = (position + motion.limit_length(1) * distance).clamp(flightBounds.position, flightBounds.end)
+		var nextVelocity : Vector2 = (next - position) / maxf(_delta, 0.001)
+		if not nextVelocity.is_equal_approx(velocity):
+			requireFullUpdate = true
+		velocity = nextVelocity
+		position = next
+		if not motion.is_zero_approx():
+			currentOrientation = motion
+		state = ActorCommons.State.IDLE
+		flightSyncTimer += _delta
+		if flightSyncTimer >= 0.1:
+			flightSyncTimer = 0.0
+			requireUpdate = true
+		NotifyPosition()
+		return
 	UpdateInput()
 
 	if agent and agent.get_avoidance_enabled():
