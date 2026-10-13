@@ -162,7 +162,7 @@ func DisplayBuff(effect : CellCommons.Modifier, skillID : int, enabled : bool):
 
 func DisplayCast(skillID : int):
 	StopCasting()
-	if skillID in ["Mana Burst".hash(), "Leaf Blades".hash(), "Sonic Scream".hash()]:
+	if SkillTraining.Index(skillID) >= 0:
 		entity.visual.BeginSpellPose(false)
 	elif skillID == DB.UnknownHash and not entity.visual.spellRelease:
 		entity.visual.EndSpellPose()
@@ -172,11 +172,11 @@ func DisplayCast(skillID : int):
 		entity.visual.StopStrike()
 	if DB.SkillsDB.has(skillID):
 		var skill : SkillCell = DB.SkillsDB[skillID]
-		if skillID in ["Mana Burst".hash(), "Leaf Blades".hash()]:
+		if SkillTraining.Index(skillID) >= 0:
 			cultivationCharge = CultivationFX.Spawn(self, global_position, "charge", entity.entityOrientation, skill.skillRange + entity.stat.current.attackRange)
 			if cultivationCharge:
 				cultivationCharge.duration = maxf(0.1, skill.castTime + entity.stat.current.castAttackDelay)
-				cultivationCharge.tint = Color(0.65, 0.45, 1.0) if skillID == "Mana Burst".hash() else Color(0.3, 1.0, 0.65)
+				cultivationCharge.tint = CultivationFX.EffectColor(SkillTraining.EFFECTS[SkillTraining.Index(skillID)])
 		if skill.castPreset:
 			currentCastFx = skill.castPreset.instantiate()
 			if currentCastFx:
@@ -184,7 +184,7 @@ func DisplayCast(skillID : int):
 				add_child(currentCastFx)
 
 func DisplaySkill(emitter : Entity, skillID : int, cooldown : float):
-	if skillID in ["Mana Burst".hash(), "Leaf Blades".hash(), "Sonic Scream".hash()]:
+	if SkillTraining.Index(skillID) >= 0:
 		emitter.visual.BeginSpellPose(true)
 	var effect := ""
 	if skillID == "Melee".hash() and emitter.type == ActorCommons.Type.PLAYER:
@@ -195,6 +195,9 @@ func DisplaySkill(emitter : Entity, skillID : int, cooldown : float):
 		effect = "blades"
 	elif skillID == "Sonic Scream".hash():
 		effect = "wave"
+	var training_index : int = SkillTraining.Index(skillID)
+	if training_index >= 3:
+		effect = SkillTraining.EFFECTS[training_index]
 	if not effect.is_empty() and Launcher.Map.currentFringe:
 		var cell: SkillCell = DB.SkillsDB.get(skillID)
 		var reach := float(cell.skillRange + emitter.stat.current.attackRange) if cell else 40.0

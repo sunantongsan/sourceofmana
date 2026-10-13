@@ -344,6 +344,7 @@ func GetUITarget(target : UICommons.UITarget) -> Control:
 #
 func _ready():
 	TranslationServer.set_locale("th")
+	add_child.call_deferred(preload("res://sources/gui/TouchMenus.gd").new())
 	add_child(preload("res://sources/gui/CombatHUD.gd").new())
 	add_child(preload("res://sources/gui/TrainingGuide.gd").new())
 	add_child(preload("res://sources/gui/TravelHUD.gd").new())

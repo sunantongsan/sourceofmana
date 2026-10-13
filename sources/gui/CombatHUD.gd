@@ -5,6 +5,8 @@ const SKILLS : Array[String] = ["Mana Burst", "Leaf Blades", "Sonic Scream"]
 const SKILL_LABELS : Array[String] = ["ปราณม่วง", "กระบี่หยก", "กระบี่คราม"]
 enum AutoMode { OFF, NORMAL, SKILLS }
 var autoMode : AutoMode = AutoMode.OFF
+var autoCursor := 0
+var blockedTargets : Dictionary[int, int] = {}
 var potionButtons : Array[Control] = []
 var potionWait := 0.0
 var attackButton : Control
@@ -121,7 +123,7 @@ func ReleaseAttack():
 func ManualSkill(idx : int):
 	if not ReadyForCombat():
 		return
-	var skillID : int = DB.GetCellHash(SKILLS[idx])
+	var skillID : int = SkillTraining.Equipped(Launcher.Player, idx)
 	if cooldowns.get(skillID, 0.0) <= 0:
 		pendingSkill = skillID
 		TryCombat(skillID, false)
@@ -156,6 +158,9 @@ func Sit():
 		Network.TriggerSit()
 
 func OnCasted(skillID : int, duration : float):
+	var index : int = SkillTraining.Index(skillID)
+	if index >= 0:
+		autoCursor = (index + 1) % SkillTraining.NAMES.size()
 	cooldowns[skillID] = duration
 	cooldownMax[skillID] = duration
 	requestWait = 0.1
@@ -164,15 +169,17 @@ func CanUse(skillID : int) -> bool:
 	var skill : SkillCell = DB.GetSkill(skillID)
 	if not skill or not Launcher.Player.progress.HasSkill(skill) or cooldowns.get(skillID, 0.0) > 0:
 		return false
+	if skill.name == "Melee":
+		return true
 	return Launcher.Player.stat.mana >= maxi(0, -int(skill.modifiers.Get(CellCommons.Modifier.Mana))) and Launcher.Player.stat.stamina >= maxi(0, -int(skill.modifiers.Get(CellCommons.Modifier.Stamina)))
 
 func TryCombat(skillID : int, automatic : bool):
 	if not ReadyForCombat() or Cultivation.IsCity(Launcher.Map.currentMapID):
 		return
-	if requestWait > 0 or not CanUse(skillID):
+	if requestWait > 0 or not CanUse(skillID) or Launcher.Player.visual.skillCastID != DB.UnknownHash:
 		return
 	if not is_instance_valid(Entities.target) or Entities.target.type != ActorCommons.Type.MONSTER or not ActorCommons.IsAlive(Entities.target):
-		Entities.Target(Launcher.Player.position, false)
+		AcquireTarget()
 	if not is_instance_valid(Entities.target) or Entities.target.type != ActorCommons.Type.MONSTER:
 		status.text = "ไม่พบศัตรูใกล้ตัว"
 		return
@@ -208,7 +215,10 @@ func _process(delta : float):
 		previousPlayer = null
 		return
 	if previousPlayer != Launcher.Player or previousMap != Launcher.Map.currentMapID:
-		SetAutoMode(AutoMode.OFF)
+		if previousPlayer != Launcher.Player:
+			SetAutoMode(AutoMode.OFF)
+		blockedTargets.clear()
+		StopCombat()
 		cooldowns.clear()
 		previousPlayer = Launcher.Player
 		previousMap = Launcher.Map.currentMapID
@@ -230,8 +240,11 @@ func _process(delta : float):
 		potion.unavailable = count == 0 or potionWait > 0
 		potion.Refresh()
 	if not ReadyForCombat():
-		if autoMode != AutoMode.OFF or pendingSkill != DB.UnknownHash:
-			SetAutoMode(AutoMode.OFF)
+		# A transient action lock, hit reaction or menu pauses the chosen mode.
+		# Death and flight still require an explicit restart.
+		if not ActorCommons.IsAlive(Launcher.Player) or Travel.IsFlying(Launcher.Player):
+			if autoMode != AutoMode.OFF:
+				SetAutoMode(AutoMode.OFF)
 		return
 	if Cultivation.IsCity(previousMap):
 		if autoMode != AutoMode.OFF:
@@ -246,10 +259,10 @@ func _process(delta : float):
 	if is_instance_valid(Entities.target) and ActorCommons.IsAlive(Entities.target):
 		status.text = "เป้าหมาย: %s • Lv.%d" % [tr(Entities.target.nick), Entities.target.stat.level]
 	for idx in skillButtons.size():
-		var skillID : int = DB.GetCellHash(SKILLS[idx])
+		var skillID : int = SkillTraining.Equipped(Launcher.Player, idx)
 		var button : Control = skillButtons[idx]
-		if not button.icon:
-			button.icon = DB.GetSkill(skillID).icon
+		button.icon = DB.GetSkill(skillID).icon
+		button.caption = SkillTraining.SHORT_TITLES[SkillTraining.Index(skillID)]
 		button.cooldown = cooldowns.get(skillID, 0.0)
 		button.cooldownMax = cooldownMax.get(skillID, 1.0)
 		button.unavailable = not CanUse(skillID) or Cultivation.IsCity(previousMap)
@@ -269,8 +282,8 @@ func _process(delta : float):
 			lastChasePosition = Launcher.Player.position
 			chaseTime = 0
 		elif chaseTime > 4:
-			SetAutoMode(AutoMode.OFF)
-			status.text = "ไปไม่ถึงเป้าหมาย กรุณาขยับตัวละคร"
+			SkipBlockedTarget()
+			status.text = "กำลังหาเป้าหมายที่เข้าถึงได้"
 			return
 	tick += delta
 	if tick < 0.3:
@@ -281,12 +294,42 @@ func _process(delta : float):
 	elif autoMode == AutoMode.NORMAL or attackButton.held:
 		TryCombat(DB.GetCellHash("Melee"), true)
 	elif autoMode == AutoMode.SKILLS:
-		for skillName in SKILLS:
-			var skillID : int = DB.GetCellHash(skillName)
-			if CanUse(skillID):
-				TryCombat(skillID, true)
-				break
+		var skillID : int = NextAutoSkill()
+		TryCombat(skillID, true)
 
 func _notification(what : int):
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_APPLICATION_PAUSED:
 		SetAutoMode(AutoMode.OFF)
+
+func NextAutoSkill() -> int:
+	for offset in SkillTraining.NAMES.size():
+		var index : int = (autoCursor + offset) % SkillTraining.NAMES.size()
+		var skillID : int = SkillTraining.NAMES[index].hash()
+		if CanUse(skillID):
+			return skillID
+	# No available qi spell: keep fighting with the weapon, never disable auto.
+	return "Melee".hash()
+
+func AcquireTarget():
+	var now : int = Time.get_ticks_msec()
+	for id in blockedTargets.keys():
+		if blockedTargets[id] <= now:
+			blockedTargets.erase(id)
+	var nearest : Entity = null
+	var distance : float = ActorCommons.TargetMaxDistance * ActorCommons.TargetMaxDistance
+	for candidate : Entity in Entities.entities.values():
+		if not is_instance_valid(candidate) or candidate.type != ActorCommons.Type.MONSTER or not ActorCommons.IsAlive(candidate) or blockedTargets.has(candidate.agentRID):
+			continue
+		var d : float = candidate.position.distance_squared_to(Launcher.Player.position)
+		if d < distance and candidate.is_visible_in_tree():
+			distance = d
+			nearest = candidate
+	Entities.SetTarget(nearest, false)
+
+func SkipBlockedTarget():
+	if is_instance_valid(Entities.target):
+		blockedTargets[Entities.target.agentRID] = Time.get_ticks_msec() + 12000
+	StopCombat()
+	Network.ClearNavigation()
+	Entities.ClearTarget()
+	AcquireTarget()

@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="SkillCell" format=3]
+[ext_resource type="Script" path="res://sources/cell/SkillCell.gd" id="1"]
+[ext_resource type="Script" path="res://sources/cell/CellModifier.gd" id="2"]
+[ext_resource type="Script" path="res://sources/actor/stat/StatModifier.gd" id="3"]
+[ext_resource type="Texture2D" path="res://data/graphics/items/cultivation/HeavenThunder.svg" id="4"]
+[sub_resource type="Resource" id="Damage"]
+script = ExtResource("3")
+_effect = 7
+_value = 62.0
+[sub_resource type="Resource" id="Mana"]
+script = ExtResource("3")
+_effect = 2
+_value = -20.0
+[sub_resource type="Resource" id="Modifiers"]
+script = ExtResource("2")
+_modifiers = Array[ExtResource("3")]([SubResource("Damage"), SubResource("Mana")])
+[resource]
+script = ExtResource("1")
+name = "อัสนีเก้าฟ้า"
+description = "โจมตีหมู่รอบตัว พลังเวทพื้นฐาน +62 • ใช้ปราณ 20 • อัปเกรดได้ 20 ขั้น"
+icon = ExtResource("4")
+type = 2
+usable = true
+weight = 0.0
+skillRange = 108
+mode = 1
+castTime = 0.65
+cooldownTime = 4.0
+modifiers = SubResource("Modifiers")

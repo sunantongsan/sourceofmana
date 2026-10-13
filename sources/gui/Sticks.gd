@@ -110,7 +110,7 @@ func _open_inventory():
 	if not FSM.IsGameState() or Launcher.GUI.IsDialogueContextOpened():
 		return
 	ReleaseControls()
-	Launcher.GUI.get_node("CombatHUD").SetAutoMode(0)
+	Launcher.GUI.get_node("CombatHUD").StopCombat()
 	Network.ClearNavigation()
 	Launcher.GUI.inventoryWindow.get_node("Layout/Margin/HBoxContainer/ItemsBox/TabContainer").current_tab = 0
 	Launcher.GUI.inventoryWindow.currentFilter = Launcher.GUI.inventoryWindow.FilterTab.ALL

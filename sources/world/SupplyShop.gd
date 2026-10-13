@@ -9,7 +9,14 @@ const CATALOG : Array[Dictionary] = [
 	{"item":"Cactus Drink", "title":"ยาแก้พิษ • HP +75", "price":10},
 	{"item":"Short Sword", "title":"กระบี่เริ่มต้น • พลังโจมตี +20", "price":80},
 	{"item":"Leather Shirt", "title":"เสื้อหนัง", "price":60},
-	{"item":"Leather Boots", "title":"รองเท้าหนัง", "price":40}
+	{"item":"Leather Boots", "title":"รองเท้าหนัง", "price":40},
+	{"item":"คัมภีร์กระบี่อัคคี", "title":"คัมภีร์กระบี่อัคคี • Lv.5", "price":250},
+	{"item":"คัมภีร์อัสนีเก้าฟ้า", "title":"คัมภีร์อัสนีเก้าฟ้า • Lv.10", "price":500},
+	{"item":"คัมภีร์บุปผาเหมันต์", "title":"คัมภีร์บุปผาเหมันต์ • Lv.15", "price":850},
+	{"item":"คัมภีร์วายุหมุนสวรรค์", "title":"คัมภีร์วายุหมุนสวรรค์ • Lv.20", "price":1200},
+	{"item":"คัมภีร์กระบี่สุริยัน", "title":"คัมภีร์กระบี่สุริยัน • Lv.25", "price":1800},
+	{"item":"หินวิญญาณ", "title":"หินวิญญาณ • วัตถุดิบสะสม", "price":1000},
+	{"item":"หยก", "title":"หยก • วัตถุดิบสะสม", "price":5000}
 ]
 
 static func Buy(player : PlayerAgent, request : int) -> bool:
@@ -44,3 +51,9 @@ static func Buy(player : PlayerAgent, request : int) -> bool:
 	player.stat.vital_stats_updated.emit()
 	Network.CommandFeedback("ร้านค้า: ซื้อ %s ×%d สำเร็จ • จ่าย %d G" % [product.title, count, cost], player.peerID)
 	return true
+
+static func Category(index : int) -> int:
+	if index < 4: return 1
+	if index < 7: return 2
+	if index < 12: return 3
+	return 4

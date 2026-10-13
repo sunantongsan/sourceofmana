@@ -128,10 +128,10 @@ func run():
 	Launcher.GUI.GoBack()
 	assert(not shop.panel.visible)
 	var starting_gold : int = agent.stat.gp
-	CommandManager.Handle(agent, "gm g+1000")
-	assert(agent.stat.gp == starting_gold + 1000)
+	CommandManager.Handle(agent, "gm g+100000")
+	assert(agent.stat.gp == starting_gold + 100000)
 	CommandManager.Handle(agent, "gm g+-1")
-	assert(agent.stat.gp == starting_gold + 1000)
+	assert(agent.stat.gp == starting_gold + 100000)
 	CommandManager.Handle(agent, "gm exp100x")
 	assert(agent.monsterExpMultiplier == 100)
 	CommandManager.Handle(agent, "gm exp1x")
@@ -141,7 +141,7 @@ func run():
 	peer.permission = ActorCommons.Permission.NONE
 	Network.ENetServer.isOffline = false
 	CommandManager.Handle(agent, "gm g+10")
-	assert(agent.stat.gp == starting_gold + 1000, "Online non-GM must be rejected even in debug builds")
+	assert(agent.stat.gp == starting_gold + 100000, "Online non-GM must be rejected even in debug builds")
 	Network.ENetServer.isOffline = true
 	peer.permission = permission
 	for index in SupplyShop.CATALOG.size():

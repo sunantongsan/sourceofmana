@@ -331,6 +331,12 @@ func TriggerExplore(peerID : int):
 
 func TriggerSkill(targetRID : int, skillID : int, peerID : int):
 	var player : PlayerAgent = Peers.GetAgent(peerID)
+	if skillID == SkillTraining.LEARN_ACTION.hash():
+		SkillTraining.Learn(player, targetRID)
+		return
+	if skillID == SkillTraining.EQUIP_ACTION.hash():
+		SkillTraining.Equip(player, targetRID)
+		return
 	if skillID == SkillTraining.ACTION.hash():
 		SkillTraining.Upgrade(player, targetRID)
 		return

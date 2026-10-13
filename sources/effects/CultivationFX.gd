@@ -17,7 +17,7 @@ static func Spawn(host: Node2D, point: Vector2, effect: String, direction: Vecto
 	var fx := CultivationFX.new()
 	fx.kind = effect
 	fx.facing = direction.normalized() if direction.length_squared() > 0.01 else Vector2.DOWN
-	fx.radius = clampf(reach, 28.0, 110.0)
+	fx.radius = clampf(reach, 28.0, 200.0)
 	fx.duration = 0.32 if effect == "hit" else (0.48 if effect == "slash" else 0.95)
 	if effect == "blades":
 		fx.tint = Color(0.3, 1.0, 0.65)
@@ -25,6 +25,9 @@ static func Spawn(host: Node2D, point: Vector2, effect: String, direction: Vecto
 		fx.tint = Color(0.65, 0.45, 1.0)
 	elif effect == "hit":
 		fx.tint = Color(1.0, 0.8, 0.35)
+	if effect in ["flame", "thunder", "frost", "gale", "solar"]:
+		fx.tint = EffectColor(effect)
+		fx.duration = 1.25 if effect == "gale" else 0.95
 	host.add_child(fx)
 	fx.global_position = point
 	return fx
@@ -62,6 +65,11 @@ func _draw():
 	var fade := pow(1.0 - t, 1.4)
 	var color := Color(tint, fade)
 	match kind:
+		"flame": DrawFlame(t, fade)
+		"thunder": DrawThunder(t, fade)
+		"frost": DrawFrost(t, fade)
+		"gale": DrawGale(t, fade)
+		"solar": DrawSolar(t, fade)
 		"slash":
 			var center := facing * 9.0 + Vector2(0, -17)
 			var heading := facing.angle()
@@ -106,3 +114,66 @@ func _draw():
 				var a := i * TAU / 6 + t * 2
 				var p := Vector2(cos(a), sin(a) * 0.55) * radius * (1 - t)
 				draw_circle(p + Vector2(0, -t * 18), 2, color)
+
+func DrawFlame(t : float, fade : float):
+	ring(radius * minf(1, t * 3), Color(1, 0.35, 0.08, fade), 5)
+	for index in 14:
+		var a : float = TAU * index / 14.0 + t * 2
+		var p := Vector2(cos(a), sin(a) * 0.55) * radius * (0.25 + t * 0.75)
+		var height : float = 20 + 35 * sin(PI * t)
+		var flame := PackedVector2Array([p + Vector2(-7, 0), p + Vector2(-10, -height * 0.4), p + Vector2(3, -height), p + Vector2(9, -height * 0.3), p + Vector2(6, 2)])
+		draw_colored_polygon(flame, Color(1, 0.22, 0.06, fade * 0.7))
+		draw_line(p, p + Vector2(2, -height * 0.7), Color(1, 0.85, 0.35, fade), 4, true)
+
+func DrawThunder(t : float, fade : float):
+	ring(radius * 0.8, Color(0.6, 0.4, 1, fade * 0.5), 3, t)
+	for index in 7:
+		var a : float = TAU * index / 7.0
+		var end := Vector2(cos(a), sin(a) * 0.55) * radius * 0.75
+		var points := PackedVector2Array()
+		for segment in 7:
+			var jitter : float = sin(segment * 8.1 + index * 3 + floor(t * 14)) * 11
+			points.append(end + Vector2(jitter if segment < 6 else 0.0, -100 + segment * 100.0 / 6))
+		draw_polyline(points, Color(0.5, 0.35, 1, fade * 0.35), 10, true)
+		draw_polyline(points, Color(0.8, 0.8, 1, fade), 4, true)
+		draw_polyline(points, Color(1, 1, 1, fade), 1.5, true)
+		draw_circle(end, 8 * fade, Color(0.8, 0.85, 1, fade * 0.6))
+
+func DrawFrost(t : float, fade : float):
+	ring(radius * minf(1, t * 2), Color(0.4, 0.9, 1, fade), 3)
+	for index in 12:
+		var a : float = TAU * index / 12
+		var p := Vector2(cos(a), sin(a) * 0.55) * radius * (0.2 + 0.8 * t)
+		var height : float = maxf(1.0, (24 + index % 3 * 8) * sin(PI * minf(0.8, t)))
+		var shard := PackedVector2Array([p + Vector2(-7, 0), p + Vector2(-3, -height * 0.65), p + Vector2(1, -height), p + Vector2(8, -height * 0.3), p + Vector2(6, 2)])
+		draw_colored_polygon(shard, Color(0.2, 0.65, 0.9, fade * 0.7))
+		draw_line(p + Vector2(1, -height), p, Color(0.9, 1, 1, fade), 2, true)
+		draw_line(Vector2.ZERO, p, Color(0.5, 0.95, 1, fade * 0.3), 1, true)
+
+func DrawGale(t : float, fade : float):
+	for layer in 9:
+		var points := PackedVector2Array()
+		var r : float = radius * (0.3 + layer * 0.075)
+		for step in 33:
+			var a : float = TAU * step / 32 + t * 12 + layer * 0.4
+			points.append(Vector2(cos(a) * r, sin(a) * r * 0.3 - layer * 7))
+		draw_polyline(points, Color(0.35 + layer * 0.06, 1, 0.8, fade * (0.3 + layer * 0.055)), 2 + layer % 3, true)
+	for index in 10:
+		var a : float = TAU * index / 10 + t * 12
+		blade(Vector2(cos(a) * radius * 0.8, sin(a) * radius * 0.4 - 25), a + PI * 0.5, 15, fade)
+
+func DrawSolar(t : float, fade : float):
+	var start := Vector2(0, -18)
+	var tip := start + facing * maxf(24.0, radius * minf(1, t * 4))
+	var side := facing.orthogonal()
+	for layer in 3:
+		var width : float = 17 - layer * 6
+		var shape := PackedVector2Array([start - side * width, tip - facing * 18 - side * width, tip + facing * 20, tip - facing * 18 + side * width, start + side * width])
+		draw_colored_polygon(shape, Color(1, 0.5 + layer * 0.22, 0.15 + layer * 0.35, fade * (0.35 + layer * 0.2)))
+	for index in 8:
+		var a : float = TAU * index / 8 + t
+		draw_line(tip + Vector2.from_angle(a) * 7, tip + Vector2.from_angle(a) * (18 + t * 25), Color(1, 0.85, 0.4, fade), 2, true)
+
+static func EffectColor(effect : String) -> Color:
+	var colors := {"burst":"a673ff", "blades":"4dffa6", "wave":"55dfff", "flame":"ff6b31", "thunder":"b395ff", "frost":"8fefff", "gale":"66efbd", "solar":"ffda75"}
+	return Color(colors.get(effect, "55dfff"))

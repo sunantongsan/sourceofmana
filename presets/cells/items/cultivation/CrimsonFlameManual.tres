@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemCell" format=3]
+[ext_resource type="Script" path="res://sources/cell/ItemCell.gd" id="1"]
+[ext_resource type="Texture2D" path="res://data/graphics/items/cultivation/CrimsonFlame.svg" id="2"]
+[resource]
+script = ExtResource("1")
+name = "คัมภีร์กระบี่อัคคี"
+description = "เรียนวิชากระบี่อัคคี เมื่อถึง Lv.5 จากเมนู วิชา / สกิล • ใช้คัมภีร์ 1 เล่ม เรียนขั้น 1"
+icon = ExtResource("2")
+stackable = true
+weight = 1.0

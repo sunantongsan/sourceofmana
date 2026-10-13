@@ -40,9 +40,9 @@ func _ready():
 	column.add_child(balance)
 	var categories := HBoxContainer.new()
 	column.add_child(categories)
-	for index in 3:
+	for index in 5:
 		var category := Button.new()
-		category.text = ["สินค้าทั้งหมด", "ยาฟื้นฟู", "อาวุธ / อุปกรณ์"][index]
+		category.text = ["ทั้งหมด", "ยาฟื้นฟู", "อุปกรณ์", "คัมภีร์", "วัตถุดิบ"][index]
 		category.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		category.custom_minimum_size.y = 40
 		category.pressed.connect(Filter.bind(index))
@@ -130,7 +130,7 @@ func BuildHeader() -> HBoxContainer:
 func Filter(category : int):
 	var first := -1
 	for index in products.size():
-		products[index].visible = category == 0 or (category == 1 and index < 4) or (category == 2 and index >= 4)
+		products[index].visible = category == 0 or SupplyShop.Category(index) == category
 		if products[index].visible and first < 0:
 			first = index
 	if not products[selected].visible:
@@ -151,7 +151,7 @@ func RefreshProduct():
 	if is_instance_valid(Launcher.Player):
 		var item = Launcher.Player.inventory.GetItem(cell)
 		count = item.count if item else 0
-	itemDetail.text = "%s\n\nราคา %d G ต่อชิ้น\nในกระเป๋า %d ชิ้น\n%s" % [product.title, product.price, count, "ใช้จากปุ่มเลือด / ปราณ หรือกระเป๋า" if selected < 4 else "สวมใส่จากกระเป๋าเพื่อเพิ่มค่าสถานะ"]
+	itemDetail.text = "%s\n\nราคา %d G ต่อชิ้น\nในกระเป๋า %d ชิ้น\n%s" % [product.title, product.price, count, cell.description if selected >= 7 else ("ใช้จากปุ่มเลือด / ปราณ หรือกระเป๋า" if selected < 4 else "สวมใส่จากกระเป๋าเพื่อเพิ่มค่าสถานะ")]
 	for idx in buyButtons.size():
 		var quantity : int = 1 if idx == 0 else 10
 		var cost : int = product.price * quantity
@@ -165,7 +165,7 @@ func Toggle():
 	Launcher.GUI.get_node("CharacterHUD").Close()
 	Launcher.GUI.get_node("TravelHUD").Close()
 	Launcher.GUI.get_node("TrainingGuide").CloseGuide()
-	Launcher.GUI.get_node("CombatHUD").SetAutoMode(0)
+	Launcher.GUI.get_node("CombatHUD").StopCombat()
 	Network.ClearNavigation()
 	Launcher.GUI.sticks.ReleaseControls()
 	Launcher.GUI.sticks.hide()
