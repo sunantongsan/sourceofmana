@@ -28,6 +28,7 @@ var equipmentEffects : Array[Node2D]		= []
 var skillCastID : int						= DB.UnknownHash
 var attackAnimLength : float				= 1.0
 var strikeTween : Tween = null
+var heroArt: HeroArt
 var heldWeapon : HeldWeapon
 var spellPose := false
 var spellRelease := false
@@ -50,6 +51,9 @@ func LoadSpriteSlot(slot : ActorCommons.Slot, sprite : Sprite2D):
 				spriteOffsetUpdate.emit()
 
 func ResetData():
+	if is_instance_valid(heroArt):
+		heroArt.queue_free()
+		heroArt = null
 	EndSpellPose()
 	StopStrike()
 	if preset:
@@ -109,6 +113,10 @@ func LoadData(data : EntityData):
 
 	ApplyAnimationOverrides()
 	ResetAnimationValue()
+	if entity.type == ActorCommons.Type.PLAYER and HeroArt.Available():
+		heroArt = HeroArt.new()
+		heroArt.visual = self
+		add_child(heroArt)
 
 func RefreshQuestHighlight():
 	if not questHighlight:
@@ -340,6 +348,8 @@ func ResetAnimationValue():
 		animationTree.animation_started.connect(OnAnimationStarted)
 
 func GetPlayerOffset() -> int:
+	if is_instance_valid(heroArt) and heroArt.visible:
+		return 78
 	var spriteOffset : int = ActorCommons.interactionDisplayOffset
 	if sprites[ActorCommons.Slot.BODY]:
 		spriteOffset = -1 * int(sprites[ActorCommons.Slot.BODY].offset.y)
@@ -458,6 +468,8 @@ func _init():
 
 # Translate the complete layered sprite together so equipment stays on the body.
 func BeginStrike():
+	if is_instance_valid(heroArt):
+		heroArt.begin_strike()
 	EndSpellPose()
 	if entity.type != ActorCommons.Type.PLAYER or entity.stat.IsMorph() or Travel.IsFlying(entity) or not is_instance_valid(preset):
 		return

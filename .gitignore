@@ -19,3 +19,6 @@ presets/maps/*
 # tmp files
 *.tmp
 __pycache__/
+
+# Vendor art is privately supplied by the owner, not publicly redistributed.
+data/graphics/hero/craftpix/

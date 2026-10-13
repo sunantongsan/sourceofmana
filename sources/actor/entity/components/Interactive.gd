@@ -234,6 +234,8 @@ func DisplayProjectile(targetPos : Vector2, skill : SkillCell):
 			Launcher.Map.currentFringe.add_child(projectileNode)
 
 func DisplayAlteration(target : Entity, emitter : Entity, value : int, alteration : ActorCommons.Alteration, skillID : int):
+	if value > 0 and alteration in [ActorCommons.Alteration.HIT, ActorCommons.Alteration.CRIT] and target and target.visual and is_instance_valid(target.visual.heroArt):
+		target.visual.heroArt.begin_hit()
 	if value > 0 and alteration in [ActorCommons.Alteration.HIT, ActorCommons.Alteration.CRIT] and Launcher.Map.currentFringe:
 		CultivationFX.Spawn(Launcher.Map.currentFringe, target.global_position + Vector2(0, -18), "hit", Vector2.UP)
 	if Launcher.Map.currentFringe:
